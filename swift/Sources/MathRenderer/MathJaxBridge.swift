@@ -61,6 +61,7 @@ public final class MathJaxBridge: @unchecked Sendable {
         bridgeName: "MathRendererMathJax",
         scripts: [
             JavaScriptResource(name: "mathjax-renderer", subdir: "MathJax"),
+            JavaScriptResource(name: "mathjax-bridge", subdir: "MathJax"),
         ]
     )
 
@@ -172,19 +173,37 @@ private struct RenderPayload: Decodable {
         markup = try c.decodeIfPresent(String.self, forKey: .markup)
             ?? c.decodeIfPresent(String.self, forKey: .svg)
             ?? ""
-        if let raw = try? c.decodeIfPresent(String.self, forKey: .viewBox) {
-            viewBox = MathJaxBridge.parseViewBox(raw)
-        } else {
-            viewBox = try? c.decodeIfPresent(ViewBoxObject.self, forKey: .viewBox).map(\.value)
-        }
+        viewBox = try c.decodeIfPresent(DecodedViewBox.self, forKey: .viewBox)?.parsed
         fallbackText = try c.decodeIfPresent(String.self, forKey: .fallbackText)
         let ok = try c.decodeIfPresent(Bool.self, forKey: .ok)
-        let errStr = try c.decodeIfPresent(String.self, forKey: .error)
-        isError = errStr.map { !$0.isEmpty } ?? ok.map { !$0 } ?? false
+        let decodedError = try c.decodeIfPresent(DecodedError.self, forKey: .error)
+        isError = decodedError?.isError ?? ok.map { !$0 } ?? false
     }
 
     private enum CodingKeys: String, CodingKey {
         case ok, markup, svg, viewBox, fallbackText, error
+    }
+}
+
+// Decodes viewBox as either a plain string ("x y w h") or a JSON object.
+private enum DecodedViewBox: Decodable {
+    case string(String)
+    case object(ViewBoxObject)
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        if let s = try? c.decode(String.self) {
+            self = .string(s)
+        } else {
+            self = .object(try c.decode(ViewBoxObject.self))
+        }
+    }
+
+    var parsed: MathJaxViewBox? {
+        switch self {
+        case .string(let s): return MathJaxBridge.parseViewBox(s)
+        case .object(let o): return o.value
+        }
     }
 }
 
@@ -205,6 +224,28 @@ private struct FlexDouble: Decodable {
         if let d = try? c.decode(Double.self) { v = d; return }
         if let s = try? c.decode(String.self), let d = Double(s) { v = d; return }
         throw DecodingError.dataCorruptedError(in: c, debugDescription: "Expected number or numeric string")
+    }
+}
+
+// Decodes error as either a bool (true = error) or a non-empty string.
+private enum DecodedError: Decodable {
+    case bool(Bool)
+    case string(String)
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.singleValueContainer()
+        if let b = try? c.decode(Bool.self) {
+            self = .bool(b)
+        } else {
+            self = .string(try c.decode(String.self))
+        }
+    }
+
+    var isError: Bool {
+        switch self {
+        case .bool(let b): return b
+        case .string(let s): return !s.isEmpty
+        }
     }
 }
 

@@ -1,7 +1,6 @@
-'use strict';
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { renderToSVG } = require('..');
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { renderToSVG } from '../index.js';
 
 // ── Inline formula ────────────────────────────────────────────────────────────
 

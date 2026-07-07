@@ -1534,61 +1534,61 @@
       var LiteParser = (function() {
         function LiteParser2() {
         }
-        LiteParser2.prototype.parseFromString = function(text, _format, adaptor) {
+        LiteParser2.prototype.parseFromString = function(text, _format, adaptor2) {
           if (_format === void 0) {
             _format = "text/html";
           }
-          if (adaptor === void 0) {
-            adaptor = null;
+          if (adaptor2 === void 0) {
+            adaptor2 = null;
           }
-          var root = adaptor.createDocument();
-          var node = adaptor.body(root);
+          var root = adaptor2.createDocument();
+          var node = adaptor2.body(root);
           var parts = text.replace(/<\?.*?\?>/g, "").split(PATTERNS.tag);
           while (parts.length) {
             var text_1 = parts.shift();
             var tag = parts.shift();
             if (text_1) {
-              this.addText(adaptor, node, text_1);
+              this.addText(adaptor2, node, text_1);
             }
             if (tag && tag.charAt(tag.length - 1) === ">") {
               if (tag.charAt(1) === "!") {
-                this.addComment(adaptor, node, tag);
+                this.addComment(adaptor2, node, tag);
               } else if (tag.charAt(1) === "/") {
-                node = this.closeTag(adaptor, node, tag);
+                node = this.closeTag(adaptor2, node, tag);
               } else {
-                node = this.openTag(adaptor, node, tag, parts);
+                node = this.openTag(adaptor2, node, tag, parts);
               }
             }
           }
-          this.checkDocument(adaptor, root);
+          this.checkDocument(adaptor2, root);
           return root;
         };
-        LiteParser2.prototype.addText = function(adaptor, node, text) {
+        LiteParser2.prototype.addText = function(adaptor2, node, text) {
           text = Entities.translate(text);
-          return adaptor.append(node, adaptor.text(text));
+          return adaptor2.append(node, adaptor2.text(text));
         };
-        LiteParser2.prototype.addComment = function(adaptor, node, comment) {
-          return adaptor.append(node, new Text_js_1.LiteComment(comment));
+        LiteParser2.prototype.addComment = function(adaptor2, node, comment) {
+          return adaptor2.append(node, new Text_js_1.LiteComment(comment));
         };
-        LiteParser2.prototype.closeTag = function(adaptor, node, tag) {
+        LiteParser2.prototype.closeTag = function(adaptor2, node, tag) {
           var kind = tag.slice(2, tag.length - 1).toLowerCase();
-          while (adaptor.parent(node) && adaptor.kind(node) !== kind) {
-            node = adaptor.parent(node);
+          while (adaptor2.parent(node) && adaptor2.kind(node) !== kind) {
+            node = adaptor2.parent(node);
           }
-          return adaptor.parent(node);
+          return adaptor2.parent(node);
         };
-        LiteParser2.prototype.openTag = function(adaptor, node, tag, parts) {
+        LiteParser2.prototype.openTag = function(adaptor2, node, tag, parts) {
           var PCDATA = this.constructor.PCDATA;
           var SELF_CLOSING = this.constructor.SELF_CLOSING;
           var kind = tag.match(/<(.*?)[\s\n>\/]/)[1].toLowerCase();
-          var child = adaptor.node(kind);
+          var child = adaptor2.node(kind);
           var attributes = tag.replace(/^<.*?[\s\n>]/, "").split(PATTERNS.attrsplit);
           if (attributes.pop().match(/>$/) || attributes.length < 5) {
-            this.addAttributes(adaptor, child, attributes);
-            adaptor.append(node, child);
+            this.addAttributes(adaptor2, child, attributes);
+            adaptor2.append(node, child);
             if (!SELF_CLOSING[kind] && !tag.match(/\/>$/)) {
               if (PCDATA[kind]) {
-                this.handlePCDATA(adaptor, child, kind, parts);
+                this.handlePCDATA(adaptor2, child, kind, parts);
               } else {
                 node = child;
               }
@@ -1596,7 +1596,7 @@
           }
           return node;
         };
-        LiteParser2.prototype.addAttributes = function(adaptor, node, attributes) {
+        LiteParser2.prototype.addAttributes = function(adaptor2, node, attributes) {
           var CDATA_ATTR = this.constructor.CDATA_ATTR;
           while (attributes.length) {
             var _a = __read(attributes.splice(0, 5), 5), name_1 = _a[1], v1 = _a[2], v2 = _a[3], v3 = _a[4];
@@ -1604,10 +1604,10 @@
             if (!CDATA_ATTR[name_1]) {
               value = Entities.translate(value);
             }
-            adaptor.setAttribute(node, name_1, value);
+            adaptor2.setAttribute(node, name_1, value);
           }
         };
-        LiteParser2.prototype.handlePCDATA = function(adaptor, node, kind, parts) {
+        LiteParser2.prototype.handlePCDATA = function(adaptor2, node, kind, parts) {
           var pcdata = [];
           var etag = "</" + kind + ">";
           var ptag = "";
@@ -1616,15 +1616,15 @@
             pcdata.push(parts.shift());
             ptag = parts.shift();
           }
-          adaptor.append(node, adaptor.text(pcdata.join("")));
+          adaptor2.append(node, adaptor2.text(pcdata.join("")));
         };
-        LiteParser2.prototype.checkDocument = function(adaptor, root) {
+        LiteParser2.prototype.checkDocument = function(adaptor2, root) {
           var e_1, _a, e_2, _b;
-          var node = this.getOnlyChild(adaptor, adaptor.body(root));
+          var node = this.getOnlyChild(adaptor2, adaptor2.body(root));
           if (!node)
             return;
           try {
-            for (var _c = __values(adaptor.childNodes(adaptor.body(root))), _d = _c.next(); !_d.done; _d = _c.next()) {
+            for (var _c = __values(adaptor2.childNodes(adaptor2.body(root))), _d = _c.next(); !_d.done; _d = _c.next()) {
               var child = _d.value;
               if (child === node) {
                 break;
@@ -1642,12 +1642,12 @@
               if (e_1) throw e_1.error;
             }
           }
-          switch (adaptor.kind(node)) {
+          switch (adaptor2.kind(node)) {
             case "html":
               try {
                 for (var _e = __values(node.children), _f = _e.next(); !_f.done; _f = _e.next()) {
                   var child = _f.value;
-                  switch (adaptor.kind(child)) {
+                  switch (adaptor2.kind(child)) {
                     case "head":
                       root.head = child;
                       break;
@@ -1666,27 +1666,27 @@
                 }
               }
               root.root = node;
-              adaptor.remove(node);
-              if (adaptor.parent(root.body) !== node) {
-                adaptor.append(node, root.body);
+              adaptor2.remove(node);
+              if (adaptor2.parent(root.body) !== node) {
+                adaptor2.append(node, root.body);
               }
-              if (adaptor.parent(root.head) !== node) {
-                adaptor.insert(root.head, root.body);
+              if (adaptor2.parent(root.head) !== node) {
+                adaptor2.insert(root.head, root.body);
               }
               break;
             case "head":
-              root.head = adaptor.replace(node, root.head);
+              root.head = adaptor2.replace(node, root.head);
               break;
             case "body":
-              root.body = adaptor.replace(node, root.body);
+              root.body = adaptor2.replace(node, root.body);
               break;
           }
         };
-        LiteParser2.prototype.getOnlyChild = function(adaptor, body) {
+        LiteParser2.prototype.getOnlyChild = function(adaptor2, body) {
           var e_3, _a;
           var node = null;
           try {
-            for (var _b = __values(adaptor.childNodes(body)), _c = _b.next(); !_c.done; _c = _b.next()) {
+            for (var _b = __values(adaptor2.childNodes(body)), _c = _b.next(); !_c.done; _c = _b.next()) {
               var child = _c.value;
               if (child instanceof Element_js_1.LiteElement) {
                 if (node)
@@ -1705,35 +1705,35 @@
           }
           return node;
         };
-        LiteParser2.prototype.serialize = function(adaptor, node, xml) {
+        LiteParser2.prototype.serialize = function(adaptor2, node, xml) {
           var _this = this;
           if (xml === void 0) {
             xml = false;
           }
           var SELF_CLOSING = this.constructor.SELF_CLOSING;
           var CDATA = this.constructor.CDATA_ATTR;
-          var tag = adaptor.kind(node);
-          var attributes = adaptor.allAttributes(node).map(function(x) {
+          var tag = adaptor2.kind(node);
+          var attributes = adaptor2.allAttributes(node).map(function(x) {
             return x.name + '="' + (CDATA[x.name] ? x.value : _this.protectAttribute(x.value)) + '"';
           }).join(" ");
-          var content = this.serializeInner(adaptor, node, xml);
+          var content = this.serializeInner(adaptor2, node, xml);
           var html = "<" + tag + (attributes ? " " + attributes : "") + ((!xml || content) && !SELF_CLOSING[tag] ? ">".concat(content, "</").concat(tag, ">") : xml ? "/>" : ">");
           return html;
         };
-        LiteParser2.prototype.serializeInner = function(adaptor, node, xml) {
+        LiteParser2.prototype.serializeInner = function(adaptor2, node, xml) {
           var _this = this;
           if (xml === void 0) {
             xml = false;
           }
           var PCDATA = this.constructor.PCDATA;
           if (PCDATA.hasOwnProperty(node.kind)) {
-            return adaptor.childNodes(node).map(function(x) {
-              return adaptor.value(x);
+            return adaptor2.childNodes(node).map(function(x) {
+              return adaptor2.value(x);
             }).join("");
           }
-          return adaptor.childNodes(node).map(function(x) {
-            var kind = adaptor.kind(x);
-            return kind === "#text" ? _this.protectHTML(adaptor.value(x)) : kind === "#comment" ? x.value : _this.serialize(adaptor, x, xml);
+          return adaptor2.childNodes(node).map(function(x) {
+            var kind = adaptor2.kind(x);
+            return kind === "#text" ? _this.protectHTML(adaptor2.value(x)) : kind === "#comment" ? x.value : _this.serialize(adaptor2, x, xml);
           }).join("");
         };
         LiteParser2.prototype.protectAttribute = function(text) {
@@ -2442,17 +2442,17 @@
         LiteBase2.prototype.createDocument = function() {
           return new Document_js_1.LiteDocument();
         };
-        LiteBase2.prototype.head = function(doc) {
-          return doc.head;
+        LiteBase2.prototype.head = function(doc2) {
+          return doc2.head;
         };
-        LiteBase2.prototype.body = function(doc) {
-          return doc.body;
+        LiteBase2.prototype.body = function(doc2) {
+          return doc2.body;
         };
-        LiteBase2.prototype.root = function(doc) {
-          return doc.root;
+        LiteBase2.prototype.root = function(doc2) {
+          return doc2.root;
         };
-        LiteBase2.prototype.doctype = function(doc) {
-          return doc.type;
+        LiteBase2.prototype.doctype = function(doc2) {
+          return doc2.type;
         };
         LiteBase2.prototype.tags = function(node, name, ns) {
           if (ns === void 0) {
@@ -2793,13 +2793,13 @@
         return LiteAdaptor2;
       })((0, NodeMixin_js_1.NodeMixin)(LiteBase));
       exports2.LiteAdaptor = LiteAdaptor;
-      function liteAdaptor(options) {
+      function liteAdaptor2(options) {
         if (options === void 0) {
           options = null;
         }
         return new LiteAdaptor(null, options);
       }
-      exports2.liteAdaptor = liteAdaptor;
+      exports2.liteAdaptor = liteAdaptor2;
     }
   });
 
@@ -2956,8 +2956,8 @@
           enumerable: false,
           configurable: true
         });
-        AbstractInputJax2.prototype.setAdaptor = function(adaptor) {
-          this.adaptor = adaptor;
+        AbstractInputJax2.prototype.setAdaptor = function(adaptor2) {
+          this.adaptor = adaptor2;
         };
         AbstractInputJax2.prototype.setMmlFactory = function(mmlFactory) {
           this.mmlFactory = mmlFactory;
@@ -3018,8 +3018,8 @@
           enumerable: false,
           configurable: true
         });
-        AbstractOutputJax2.prototype.setAdaptor = function(adaptor) {
-          this.adaptor = adaptor;
+        AbstractOutputJax2.prototype.setAdaptor = function(adaptor2) {
+          this.adaptor = adaptor2;
         };
         AbstractOutputJax2.prototype.initialize = function() {
         };
@@ -5081,12 +5081,12 @@
         XMLNode2.prototype.getXML = function() {
           return this.xml;
         };
-        XMLNode2.prototype.setXML = function(xml, adaptor) {
-          if (adaptor === void 0) {
-            adaptor = null;
+        XMLNode2.prototype.setXML = function(xml, adaptor2) {
+          if (adaptor2 === void 0) {
+            adaptor2 = null;
           }
           this.xml = xml;
-          this.adaptor = adaptor;
+          this.adaptor = adaptor2;
           return this;
         };
         XMLNode2.prototype.getSerializedXML = function() {
@@ -10381,7 +10381,7 @@
         return DefaultMathItem2;
       })(MathItem_js_1.AbstractMathItem);
       var AbstractMathDocument = (function() {
-        function AbstractMathDocument2(document2, adaptor, options) {
+        function AbstractMathDocument2(document2, adaptor2, options) {
           var _this = this;
           var CLASS = this.constructor;
           this.document = document2;
@@ -10395,10 +10395,10 @@
             inputJax = [inputJax];
           }
           this.inputJax = inputJax;
-          this.adaptor = adaptor;
-          this.outputJax.setAdaptor(adaptor);
+          this.adaptor = adaptor2;
+          this.outputJax.setAdaptor(adaptor2);
           this.inputJax.map(function(jax) {
-            return jax.setAdaptor(adaptor);
+            return jax.setAdaptor(adaptor2);
           });
           this.mmlFactory = this.options["MmlFactory"] || new MmlFactory_js_1.MmlFactory();
           this.inputJax.map(function(jax) {
@@ -10704,16 +10704,16 @@
           if (!Array.isArray(elements)) {
             elements = [elements];
           }
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var items = [];
-          var containers = adaptor.getElements(elements, this.document);
+          var containers = adaptor2.getElements(elements, this.document);
           try {
             ITEMS: for (var _c = __values(this.math), _d = _c.next(); !_d.done; _d = _c.next()) {
               var item = _d.value;
               try {
                 for (var containers_1 = (e_12 = void 0, __values(containers)), containers_1_1 = containers_1.next(); !containers_1_1.done; containers_1_1 = containers_1.next()) {
                   var container = containers_1_1.value;
-                  if (item.start.node && adaptor.contains(container, item.start.node)) {
+                  if (item.start.node && adaptor2.contains(container, item.start.node)) {
                     items.push(item);
                     continue ITEMS;
                   }
@@ -10746,11 +10746,11 @@
           MmlFactory: null,
           MathList: DefaultMathList,
           MathItem: DefaultMathItem,
-          compileError: function(doc, math, err) {
-            doc.compileError(math, err);
+          compileError: function(doc2, math, err) {
+            doc2.compileError(math, err);
           },
-          typesetError: function(doc, math, err) {
-            doc.typesetError(math, err);
+          typesetError: function(doc2, math, err) {
+            doc2.typesetError(math, err);
           },
           renderActions: (0, Options_js_1.expandable)({
             find: [MathItem_js_1.STATE.FINDMATH, "findMath", "", false],
@@ -10801,12 +10801,12 @@
         return DefaultMathDocument2;
       })(MathDocument_js_1.AbstractMathDocument);
       var AbstractHandler = (function() {
-        function AbstractHandler2(adaptor, priority) {
+        function AbstractHandler2(adaptor2, priority) {
           if (priority === void 0) {
             priority = 5;
           }
           this.documentClass = DefaultMathDocument;
-          this.adaptor = adaptor;
+          this.adaptor = adaptor2;
           this.priority = priority;
         }
         Object.defineProperty(AbstractHandler2.prototype, "name", {
@@ -10919,20 +10919,20 @@
             restore = false;
           }
           if (this.state() >= MathItem_js_1.STATE.TYPESET) {
-            var adaptor = this.adaptor;
+            var adaptor2 = this.adaptor;
             var node = this.start.node;
-            var math = adaptor.text("");
+            var math = adaptor2.text("");
             if (restore) {
               var text = this.start.delim + this.math + this.end.delim;
               if (this.inputJax.processStrings) {
-                math = adaptor.text(text);
+                math = adaptor2.text(text);
               } else {
-                var doc = adaptor.parse(text, "text/html");
-                math = adaptor.firstChild(adaptor.body(doc));
+                var doc2 = adaptor2.parse(text, "text/html");
+                math = adaptor2.firstChild(adaptor2.body(doc2));
               }
             }
-            if (adaptor.parent(node)) {
-              adaptor.replace(math, node);
+            if (adaptor2.parent(node)) {
+              adaptor2.replace(math, node);
             }
             this.start.node = this.end.node = math;
             this.start.n = this.end.n = 0;
@@ -11187,23 +11187,23 @@
       var MathItem_js_1 = require_MathItem();
       var HTMLDocument = (function(_super) {
         __extends(HTMLDocument2, _super);
-        function HTMLDocument2(document2, adaptor, options) {
+        function HTMLDocument2(document2, adaptor2, options) {
           var _this = this;
           var _a = __read((0, Options_js_1.separateOptions)(options, HTMLDomStrings_js_1.HTMLDomStrings.OPTIONS), 2), html = _a[0], dom = _a[1];
-          _this = _super.call(this, document2, adaptor, html) || this;
+          _this = _super.call(this, document2, adaptor2, html) || this;
           _this.domStrings = _this.options["DomStrings"] || new HTMLDomStrings_js_1.HTMLDomStrings(dom);
-          _this.domStrings.adaptor = adaptor;
+          _this.domStrings.adaptor = adaptor2;
           _this.styles = [];
           return _this;
         }
         HTMLDocument2.prototype.findPosition = function(N, index, delim, nodes) {
           var e_1, _a;
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           try {
             for (var _b = __values(nodes[N]), _c = _b.next(); !_c.done; _c = _b.next()) {
               var list = _c.value;
               var _d = __read(list, 2), node = _d[0], n = _d[1];
-              if (index <= n && adaptor.kind(node) === "#text") {
+              if (index <= n && adaptor2.kind(node) === "#text") {
                 return { node, n: Math.max(index, 0), delim };
               }
               index -= n;
@@ -11316,14 +11316,14 @@
         };
         HTMLDocument2.prototype.addStyleSheet = function() {
           var sheet = this.documentStyleSheet();
-          var adaptor = this.adaptor;
-          if (sheet && !adaptor.parent(sheet)) {
-            var head = adaptor.head(this.document);
-            var styles = this.findSheet(head, adaptor.getAttribute(sheet, "id"));
+          var adaptor2 = this.adaptor;
+          if (sheet && !adaptor2.parent(sheet)) {
+            var head = adaptor2.head(this.document);
+            var styles = this.findSheet(head, adaptor2.getAttribute(sheet, "id"));
             if (styles) {
-              adaptor.replace(sheet, styles);
+              adaptor2.replace(sheet, styles);
             } else {
-              adaptor.append(head, sheet);
+              adaptor2.append(head, sheet);
             }
           }
         };
@@ -11430,26 +11430,26 @@
           return _this;
         }
         HTMLHandler2.prototype.handlesDocument = function(document2) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           if (typeof document2 === "string") {
             try {
-              document2 = adaptor.parse(document2, "text/html");
+              document2 = adaptor2.parse(document2, "text/html");
             } catch (err) {
             }
           }
-          if (document2 instanceof adaptor.window.Document || document2 instanceof adaptor.window.HTMLElement || document2 instanceof adaptor.window.DocumentFragment) {
+          if (document2 instanceof adaptor2.window.Document || document2 instanceof adaptor2.window.HTMLElement || document2 instanceof adaptor2.window.DocumentFragment) {
             return true;
           }
           return false;
         };
         HTMLHandler2.prototype.create = function(document2, options) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           if (typeof document2 === "string") {
-            document2 = adaptor.parse(document2, "text/html");
-          } else if (document2 instanceof adaptor.window.HTMLElement || document2 instanceof adaptor.window.DocumentFragment) {
+            document2 = adaptor2.parse(document2, "text/html");
+          } else if (document2 instanceof adaptor2.window.HTMLElement || document2 instanceof adaptor2.window.DocumentFragment) {
             var child = document2;
-            document2 = adaptor.parse("", "text/html");
-            adaptor.append(adaptor.body(document2), child);
+            document2 = adaptor2.parse("", "text/html");
+            adaptor2.append(adaptor2.body(document2), child);
           }
           return _super.prototype.create.call(this, document2, options);
         };
@@ -11467,12 +11467,12 @@
       exports2.RegisterHTMLHandler = void 0;
       var mathjax_js_1 = require_mathjax();
       var HTMLHandler_js_1 = require_HTMLHandler();
-      function RegisterHTMLHandler(adaptor) {
-        var handler = new HTMLHandler_js_1.HTMLHandler(adaptor);
+      function RegisterHTMLHandler2(adaptor2) {
+        var handler = new HTMLHandler_js_1.HTMLHandler(adaptor2);
         mathjax_js_1.mathjax.handlers.register(handler);
         return handler;
       }
-      exports2.RegisterHTMLHandler = RegisterHTMLHandler;
+      exports2.RegisterHTMLHandler = RegisterHTMLHandler2;
     }
   });
 
@@ -18307,22 +18307,22 @@
       var Tags_js_1 = require_Tags();
       var Configuration_js_1 = require_Configuration();
       require_BaseConfiguration();
-      var TeX = (function(_super) {
-        __extends(TeX2, _super);
-        function TeX2(options) {
+      var TeX2 = (function(_super) {
+        __extends(TeX3, _super);
+        function TeX3(options) {
           if (options === void 0) {
             options = {};
           }
           var _this = this;
-          var _a = __read((0, Options_js_1.separateOptions)(options, TeX2.OPTIONS, FindTeX_js_1.FindTeX.OPTIONS), 3), rest = _a[0], tex = _a[1], find = _a[2];
-          _this = _super.call(this, tex) || this;
+          var _a = __read((0, Options_js_1.separateOptions)(options, TeX3.OPTIONS, FindTeX_js_1.FindTeX.OPTIONS), 3), rest = _a[0], tex2 = _a[1], find = _a[2];
+          _this = _super.call(this, tex2) || this;
           _this.findTeX = _this.options["FindTeX"] || new FindTeX_js_1.FindTeX(find);
           var packages = _this.options.packages;
-          var configuration = _this.configuration = TeX2.configure(packages);
+          var configuration = _this.configuration = TeX3.configure(packages);
           var parseOptions = _this._parseOptions = new ParseOptions_js_1.default(configuration, [_this.options, Tags_js_1.TagsFactory.OPTIONS]);
           (0, Options_js_1.userOptions)(parseOptions.options, rest);
           configuration.config(_this);
-          TeX2.tags(parseOptions, configuration);
+          TeX3.tags(parseOptions, configuration);
           _this.postFilters.add(FilterUtil_js_1.default.cleanSubSup, -6);
           _this.postFilters.add(FilterUtil_js_1.default.setInherited, -5);
           _this.postFilters.add(FilterUtil_js_1.default.moveLimits, -4);
@@ -18331,35 +18331,35 @@
           _this.postFilters.add(FilterUtil_js_1.default.combineRelations, -1);
           return _this;
         }
-        TeX2.configure = function(packages) {
+        TeX3.configure = function(packages) {
           var configuration = new Configuration_js_1.ParserConfiguration(packages, ["tex"]);
           configuration.init();
           return configuration;
         };
-        TeX2.tags = function(options, configuration) {
+        TeX3.tags = function(options, configuration) {
           Tags_js_1.TagsFactory.addTags(configuration.tags);
           Tags_js_1.TagsFactory.setDefault(options.options.tags);
           options.tags = Tags_js_1.TagsFactory.getDefault();
           options.tags.configuration = options;
         };
-        TeX2.prototype.setMmlFactory = function(mmlFactory) {
+        TeX3.prototype.setMmlFactory = function(mmlFactory) {
           _super.prototype.setMmlFactory.call(this, mmlFactory);
           this._parseOptions.nodeFactory.setMmlFactory(mmlFactory);
         };
-        Object.defineProperty(TeX2.prototype, "parseOptions", {
+        Object.defineProperty(TeX3.prototype, "parseOptions", {
           get: function() {
             return this._parseOptions;
           },
           enumerable: false,
           configurable: true
         });
-        TeX2.prototype.reset = function(tag) {
+        TeX3.prototype.reset = function(tag) {
           if (tag === void 0) {
             tag = 0;
           }
           this.parseOptions.tags.reset(tag);
         };
-        TeX2.prototype.compile = function(math, document2) {
+        TeX3.prototype.compile = function(math, document2) {
           this.parseOptions.clear();
           this.executeFilters(this.preFilters, math, document2, this.parseOptions);
           var display = math.display;
@@ -18391,20 +18391,20 @@
           this.mathNode = this.parseOptions.root;
           return this.mathNode;
         };
-        TeX2.prototype.findMath = function(strings) {
+        TeX3.prototype.findMath = function(strings) {
           return this.findTeX.findMath(strings);
         };
-        TeX2.prototype.formatError = function(err) {
+        TeX3.prototype.formatError = function(err) {
           var message = err.message.replace(/\n.*/, "");
           return this.parseOptions.nodeFactory.create("error", message, err.id, this.latex);
         };
-        TeX2.NAME = "TeX";
-        TeX2.OPTIONS = __assign(__assign({}, InputJax_js_1.AbstractInputJax.OPTIONS), { FindTeX: null, packages: ["base"], digits: /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)?|\.[0-9]+)/, maxBuffer: 5 * 1024, formatError: function(jax, err) {
+        TeX3.NAME = "TeX";
+        TeX3.OPTIONS = __assign(__assign({}, InputJax_js_1.AbstractInputJax.OPTIONS), { FindTeX: null, packages: ["base"], digits: /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)?|\.[0-9]+)/, maxBuffer: 5 * 1024, formatError: function(jax, err) {
           return jax.formatError(err);
         } });
-        return TeX2;
+        return TeX3;
       })(InputJax_js_1.AbstractInputJax);
-      exports2.TeX = TeX;
+      exports2.TeX = TeX2;
     }
   });
 
@@ -18672,12 +18672,12 @@
         CommonOutputJax2.prototype.getMetrics = function(html) {
           var e_1, _a;
           this.setDocument(html);
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var maps = this.getMetricMaps(html);
           try {
             for (var _b = __values(html.math), _c = _b.next(); !_c.done; _c = _b.next()) {
               var math = _c.value;
-              var parent_1 = adaptor.parent(math.start.node);
+              var parent_1 = adaptor2.parent(math.start.node);
               if (math.state() < MathItem_js_1.STATE.METRICS && parent_1) {
                 var map = maps[math.display ? 1 : 0];
                 var _d = map.get(parent_1), em = _d.em, ex = _d.ex, containerWidth = _d.containerWidth, lineWidth = _d.lineWidth, scale = _d.scale, family = _d.family;
@@ -18710,12 +18710,12 @@
         };
         CommonOutputJax2.prototype.getMetricMaps = function(html) {
           var e_2, _a, e_3, _b, e_4, _c, e_5, _d, e_6, _e;
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var domMaps = [/* @__PURE__ */ new Map(), /* @__PURE__ */ new Map()];
           try {
             for (var _f = __values(html.math), _g = _f.next(); !_g.done; _g = _f.next()) {
               var math = _g.value;
-              var node = adaptor.parent(math.start.node);
+              var node = adaptor2.parent(math.start.node);
               if (node && math.state() < MathItem_js_1.STATE.METRICS) {
                 var map = domMaps[math.display ? 1 : 0];
                 if (!map.has(node)) {
@@ -18767,7 +18767,7 @@
               try {
                 for (var _p = (e_6 = void 0, __values(domMaps[i].values())), _q = _p.next(); !_q.done; _q = _p.next()) {
                   var node = _q.value;
-                  adaptor.remove(node);
+                  adaptor2.remove(node);
                 }
               } catch (e_6_1) {
                 e_6 = { error: e_6_1 };
@@ -18791,7 +18791,7 @@
           return maps;
         };
         CommonOutputJax2.prototype.getTestElement = function(node, display) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           if (!this.testInline) {
             this.testInline = this.html("mjx-test", { style: {
               display: "inline-block",
@@ -18825,24 +18825,24 @@
                 "float": "right"
               } })
             ]);
-            this.testDisplay = adaptor.clone(this.testInline);
-            adaptor.setStyle(this.testDisplay, "display", "table");
-            adaptor.setStyle(this.testDisplay, "margin-right", "");
-            adaptor.setStyle(adaptor.firstChild(this.testDisplay), "display", "none");
-            var right = adaptor.lastChild(this.testDisplay);
-            adaptor.setStyle(right, "display", "table-cell");
-            adaptor.setStyle(right, "width", "10000em");
-            adaptor.setStyle(right, "float", "");
+            this.testDisplay = adaptor2.clone(this.testInline);
+            adaptor2.setStyle(this.testDisplay, "display", "table");
+            adaptor2.setStyle(this.testDisplay, "margin-right", "");
+            adaptor2.setStyle(adaptor2.firstChild(this.testDisplay), "display", "none");
+            var right = adaptor2.lastChild(this.testDisplay);
+            adaptor2.setStyle(right, "display", "table-cell");
+            adaptor2.setStyle(right, "width", "10000em");
+            adaptor2.setStyle(right, "float", "");
           }
-          return adaptor.append(node, adaptor.clone(display ? this.testDisplay : this.testInline));
+          return adaptor2.append(node, adaptor2.clone(display ? this.testDisplay : this.testInline));
         };
         CommonOutputJax2.prototype.measureMetrics = function(node, getFamily) {
-          var adaptor = this.adaptor;
-          var family = getFamily ? adaptor.fontFamily(node) : "";
-          var em = adaptor.fontSize(node);
-          var _a = __read(adaptor.nodeSize(adaptor.childNode(node, 1)), 2), w = _a[0], h = _a[1];
+          var adaptor2 = this.adaptor;
+          var family = getFamily ? adaptor2.fontFamily(node) : "";
+          var em = adaptor2.fontSize(node);
+          var _a = __read(adaptor2.nodeSize(adaptor2.childNode(node, 1)), 2), w = _a[0], h = _a[1];
           var ex = w ? h / 60 : em * this.options.exFactor;
-          var containerWidth = !w ? 1e6 : adaptor.getStyle(node, "display") === "table" ? adaptor.nodeSize(adaptor.lastChild(node))[0] - 1 : adaptor.nodeBBox(adaptor.lastChild(node)).left - adaptor.nodeBBox(adaptor.firstChild(node)).left - 2;
+          var containerWidth = !w ? 1e6 : adaptor2.getStyle(node, "display") === "table" ? adaptor2.nodeSize(adaptor2.lastChild(node))[0] - 1 : adaptor2.nodeBBox(adaptor2.lastChild(node)).left - adaptor2.nodeBBox(adaptor2.firstChild(node)).left - 2;
           var scale = Math.max(this.options.minScale, this.options.matchFontHeight ? ex / this.font.params.x_height / em : 1);
           var lineWidth = 1e6;
           return { em, ex, containerWidth, lineWidth, scale, family };
@@ -18953,8 +18953,8 @@
           return bbox;
         };
         CommonOutputJax2.prototype.measureXMLnode = function(xml) {
-          var adaptor = this.adaptor;
-          var content = this.html("mjx-xml-block", { style: { display: "inline-block" } }, [adaptor.clone(xml)]);
+          var adaptor2 = this.adaptor;
+          var content = this.html("mjx-xml-block", { style: { display: "inline-block" } }, [adaptor2.clone(xml)]);
           var base = this.html("mjx-baseline", { style: { display: "inline-block", width: 0, height: 0 } });
           var style = {
             position: "absolute",
@@ -18963,15 +18963,15 @@
             "line-height": "normal"
           };
           var node = this.html("mjx-measure-xml", { style }, [base, content]);
-          adaptor.append(adaptor.parent(this.math.start.node), this.container);
-          adaptor.append(this.container, node);
+          adaptor2.append(adaptor2.parent(this.math.start.node), this.container);
+          adaptor2.append(this.container, node);
           var em = this.math.metrics.em * this.math.metrics.scale;
-          var _a = adaptor.nodeBBox(content), left = _a.left, right = _a.right, bottom = _a.bottom, top = _a.top;
+          var _a = adaptor2.nodeBBox(content), left = _a.left, right = _a.right, bottom = _a.bottom, top = _a.top;
           var w = (right - left) / em;
-          var h = (adaptor.nodeBBox(base).top - top) / em;
+          var h = (adaptor2.nodeBBox(base).top - top) / em;
           var d = (bottom - top) / em - h;
-          adaptor.remove(this.container);
-          adaptor.remove(node);
+          adaptor2.remove(this.container);
+          adaptor2.remove(node);
           return { w, h, d };
         };
         CommonOutputJax2.prototype.cssFontStyles = function(font, styles) {
@@ -20475,7 +20475,7 @@
         };
         SVGWrapper2.prototype.handleColor = function() {
           var _a;
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var attributes = this.node.attributes;
           var mathcolor = attributes.getExplicit("mathcolor");
           var color = attributes.getExplicit("color");
@@ -20483,8 +20483,8 @@
           var background = attributes.getExplicit("background");
           var bgcolor = ((_a = this.styles) === null || _a === void 0 ? void 0 : _a.get("background-color")) || "";
           if (mathcolor || color) {
-            adaptor.setAttribute(this.element, "fill", mathcolor || color);
-            adaptor.setAttribute(this.element, "stroke", mathcolor || color);
+            adaptor2.setAttribute(this.element, "fill", mathcolor || color);
+            adaptor2.setAttribute(this.element, "stroke", mathcolor || color);
           }
           if (mathbackground || background || bgcolor) {
             var _b = this.getOuterBBox(), h = _b.h, d = _b.d, w = _b.w;
@@ -20496,11 +20496,11 @@
               height: this.fixed(h + d),
               "data-bgcolor": true
             });
-            var child = adaptor.firstChild(this.element);
+            var child = adaptor2.firstChild(this.element);
             if (child) {
-              adaptor.insert(rect, child);
+              adaptor2.insert(rect, child);
             } else {
-              adaptor.append(this.element, rect);
+              adaptor2.append(this.element, rect);
             }
           }
         };
@@ -20548,8 +20548,8 @@
             [outerLB, outerRB, innerRB, innerLB],
             [outerLB, outerLT, innerLT, innerLB]
           ];
-          var adaptor = this.adaptor;
-          var child = adaptor.firstChild(this.element);
+          var adaptor2 = this.adaptor;
+          var child = adaptor2.firstChild(this.element);
           try {
             for (var _g = __values([0, 1, 2, 3]), _h = _g.next(); !_h.done; _h = _g.next()) {
               var i = _h.value;
@@ -20608,12 +20608,12 @@
             "stroke-linecap": dot ? "round" : "square",
             "stroke-dasharray": dot ? [1, this.fixed(W / n - 2e-3)].join(" ") : [this.fixed(m), this.fixed(3 * m)].join(" ")
           });
-          var adaptor = this.adaptor;
-          var child = adaptor.firstChild(this.element);
+          var adaptor2 = this.adaptor;
+          var child = adaptor2.firstChild(this.element);
           if (child) {
-            adaptor.insert(line, child);
+            adaptor2.insert(line, child);
           } else {
-            adaptor.append(this.element, line);
+            adaptor2.append(this.element, line);
           }
         };
         SVGWrapper2.prototype.handleAttributes = function() {
@@ -20674,25 +20674,25 @@
           if (!this.node.attributes || !this.node.attributes.get("id")) {
             return y;
           }
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var h = this.getBBox().h;
-          var children = adaptor.childNodes(this.element);
+          var children = adaptor2.childNodes(this.element);
           children.forEach(function(child) {
-            return adaptor.remove(child);
+            return adaptor2.remove(child);
           });
           var g = this.svg("g", { "data-idbox": true, transform: "translate(0,".concat(this.fixed(-h), ")") }, children);
-          adaptor.append(this.element, this.svg("text", { "data-id-align": true }, [this.text("")]));
-          adaptor.append(this.element, g);
+          adaptor2.append(this.element, this.svg("text", { "data-id-align": true }, [this.text("")]));
+          adaptor2.append(this.element, g);
           return y + h;
         };
         SVGWrapper2.prototype.firstChild = function() {
-          var adaptor = this.adaptor;
-          var child = adaptor.firstChild(this.element);
-          if (child && adaptor.kind(child) === "text" && adaptor.getAttribute(child, "data-id-align")) {
-            child = adaptor.firstChild(adaptor.next(child));
+          var adaptor2 = this.adaptor;
+          var child = adaptor2.firstChild(this.element);
+          if (child && adaptor2.kind(child) === "text" && adaptor2.getAttribute(child, "data-id-align")) {
+            child = adaptor2.firstChild(adaptor2.next(child));
           }
-          if (child && adaptor.kind(child) === "rect" && adaptor.getAttribute(child, "data-hitbox")) {
-            child = adaptor.next(child);
+          if (child && adaptor2.kind(child) === "rect" && adaptor2.getAttribute(child, "data-hitbox")) {
+            child = adaptor2.next(child);
           }
           return child;
         };
@@ -20908,10 +20908,10 @@
         }
         SVGmath2.prototype.toSVG = function(parent) {
           _super.prototype.toSVG.call(this, parent);
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var display = this.node.attributes.get("display") === "block";
           if (display) {
-            adaptor.setAttribute(this.jax.container, "display", "true");
+            adaptor2.setAttribute(this.jax.container, "display", "true");
             this.handleDisplay();
           }
           if (this.jax.document.options.internalSpeechTitles) {
@@ -20942,19 +20942,19 @@
         };
         SVGmath2.prototype.handleSpeech = function() {
           var e_1, _a;
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var attributes = this.node.attributes;
           var speech = attributes.get("aria-label") || attributes.get("data-semantic-speech");
           if (speech) {
             var id = this.getTitleID();
             var label = this.svg("title", { id }, [this.text(speech)]);
-            adaptor.insert(label, adaptor.firstChild(this.element));
-            adaptor.setAttribute(this.element, "aria-labeledby", id);
-            adaptor.removeAttribute(this.element, "aria-label");
+            adaptor2.insert(label, adaptor2.firstChild(this.element));
+            adaptor2.setAttribute(this.element, "aria-labeledby", id);
+            adaptor2.removeAttribute(this.element, "aria-label");
             try {
               for (var _b = __values(this.childNodes[0].childNodes), _c = _b.next(); !_c.done; _c = _b.next()) {
                 var child = _c.value;
-                adaptor.setAttribute(child.element, "aria-hidden", "true");
+                adaptor2.setAttribute(child.element, "aria-hidden", "true");
               }
             } catch (e_1_1) {
               e_1 = { error: e_1_1 };
@@ -21775,7 +21775,7 @@
             return;
           T = Math.max(0, T - VFUZZ);
           B = Math.max(0, B - VFUZZ);
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var _a = __read(this.getChar(n, v), 3), h = _a[0], d = _a[1], w = _a[2];
           var Y = H + D - T - B;
           var s = 1.5 * Y / (h + d);
@@ -21792,9 +21792,9 @@
             }).join(" ")
           });
           this.addGlyph(n, v, 0, 0, svg);
-          var glyph = adaptor.lastChild(svg);
-          adaptor.setAttribute(glyph, "transform", "scale(1,".concat(this.jax.fixed(s), ")"));
-          adaptor.append(this.element, svg);
+          var glyph = adaptor2.lastChild(svg);
+          adaptor2.setAttribute(glyph, "transform", "scale(1,".concat(this.jax.fixed(s), ")"));
+          adaptor2.append(this.element, svg);
         };
         SVGmo2.prototype.addBot = function(n, v, D, W) {
           if (!n)
@@ -21823,7 +21823,7 @@
             return;
           R = Math.max(0, R - HFUZZ);
           L = Math.max(0, L - HFUZZ);
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var _a = __read(this.getChar(n, v), 3), h = _a[0], d = _a[1], w = _a[2];
           var X = W - L - R;
           var Y = h + d + 2 * VFUZZ;
@@ -21841,9 +21841,9 @@
             }).join(" ")
           });
           this.addGlyph(n, v, 0, 0, svg);
-          var glyph = adaptor.lastChild(svg);
-          adaptor.setAttribute(glyph, "transform", "scale(" + this.jax.fixed(s) + ",1)");
-          adaptor.append(this.element, svg);
+          var glyph = adaptor2.lastChild(svg);
+          adaptor2.setAttribute(glyph, "transform", "scale(" + this.jax.fixed(s) + ",1)");
+          adaptor2.append(this.element, svg);
         };
         SVGmo2.prototype.addRight = function(n, v, W) {
           if (!n)
@@ -22650,21 +22650,21 @@
           class_1.prototype.getFractionBBox = function(bbox, display, t) {
             var nbox = this.childNodes[0].getOuterBBox();
             var dbox = this.childNodes[1].getOuterBBox();
-            var tex = this.font.params;
-            var a = tex.axis_height;
+            var tex2 = this.font.params;
+            var a = tex2.axis_height;
             var _a = this.getTUV(display, t), T = _a.T, u = _a.u, v = _a.v;
             bbox.combine(nbox, 0, a + T + Math.max(nbox.d * nbox.rscale, u));
             bbox.combine(dbox, 0, a - T - Math.max(dbox.h * dbox.rscale, v));
             bbox.w += 2 * this.pad + 0.2;
           };
           class_1.prototype.getTUV = function(display, t) {
-            var tex = this.font.params;
-            var a = tex.axis_height;
+            var tex2 = this.font.params;
+            var a = tex2.axis_height;
             var T = (display ? 3.5 : 1.5) * t;
             return {
               T: (display ? 3.5 : 1.5) * t,
-              u: (display ? tex.num1 : tex.num2) - a - T,
-              v: (display ? tex.denom1 : tex.denom2) + a - T
+              u: (display ? tex2.num1 : tex2.num2) - a - T,
+              v: (display ? tex2.denom1 : tex2.denom2) + a - T
             };
           };
           class_1.prototype.getAtopBBox = function(bbox, display) {
@@ -22676,9 +22676,9 @@
           class_1.prototype.getUVQ = function(display) {
             var nbox = this.childNodes[0].getOuterBBox();
             var dbox = this.childNodes[1].getOuterBBox();
-            var tex = this.font.params;
-            var _a = __read(display ? [tex.num1, tex.denom1] : [tex.num3, tex.denom2], 2), u = _a[0], v = _a[1];
-            var p = (display ? 7 : 3) * tex.rule_thickness;
+            var tex2 = this.font.params;
+            var _a = __read(display ? [tex2.num1, tex2.denom1] : [tex2.num3, tex2.denom2], 2), u = _a[0], v = _a[1];
+            var p = (display ? 7 : 3) * tex2.rule_thickness;
             var q = u - nbox.d * nbox.scale - (dbox.h * dbox.scale - v);
             if (q < p) {
               u += (p - q) / 2;
@@ -22802,10 +22802,10 @@
           var _b = __read(this.childNodes, 2), num = _b[0], den = _b[1];
           var nbox = num.getOuterBBox();
           var dbox = den.getOuterBBox();
-          var tex = this.font.params;
-          var a = tex.axis_height;
+          var tex2 = this.font.params;
+          var a = tex2.axis_height;
           var d = 0.1;
-          var pad = this.node.getProperty("withDelims") ? 0 : tex.nulldelimiterspace;
+          var pad = this.node.getProperty("withDelims") ? 0 : tex2.nulldelimiterspace;
           var W = Math.max((nbox.L + nbox.w + nbox.R) * nbox.rscale, (dbox.L + dbox.w + dbox.R) * dbox.rscale);
           var nx = this.getAlignX(W, nbox, numalign) + d + pad;
           var dx = this.getAlignX(W, dbox, denomalign) + d + pad;
@@ -22827,8 +22827,8 @@
           var _b = __read(this.childNodes, 2), num = _b[0], den = _b[1];
           var nbox = num.getOuterBBox();
           var dbox = den.getOuterBBox();
-          var tex = this.font.params;
-          var pad = this.node.getProperty("withDelims") ? 0 : tex.nulldelimiterspace;
+          var tex2 = this.font.params;
+          var pad = this.node.getProperty("withDelims") ? 0 : tex2.nulldelimiterspace;
           var W = Math.max((nbox.L + nbox.w + nbox.R) * nbox.rscale, (dbox.L + dbox.w + dbox.R) * dbox.rscale);
           var nx = this.getAlignX(W, nbox, numalign) + pad;
           var dx = this.getAlignX(W, dbox, denomalign) + pad;
@@ -23032,14 +23032,14 @@
           var q = this.getPQ(sbox)[1];
           var t = this.font.params.rule_thickness * this.bbox.scale;
           var H = bbox.h + q + t;
-          var SVG = this.standardSVGnode(parent);
-          var BASE = this.adaptor.append(SVG, this.svg("g"));
-          this.addRoot(SVG, root, sbox, H);
-          surd.toSVG(SVG);
+          var SVG2 = this.standardSVGnode(parent);
+          var BASE = this.adaptor.append(SVG2, this.svg("g"));
+          this.addRoot(SVG2, root, sbox, H);
+          surd.toSVG(SVG2);
           surd.place(this.dx, H - sbox.h);
           base.toSVG(BASE);
           base.place(this.dx + sbox.w, 0);
-          this.adaptor.append(SVG, this.svg("rect", {
+          this.adaptor.append(SVG2, this.svg("rect", {
             width: this.fixed(bbox.w),
             height: this.fixed(t),
             x: this.fixed(this.dx + sbox.w),
@@ -23622,19 +23622,19 @@
           class_1.prototype.getV = function() {
             var bbox = this.baseCore.getOuterBBox();
             var sbox = this.scriptChild.getOuterBBox();
-            var tex = this.font.params;
-            var subscriptshift = this.length2em(this.node.attributes.get("subscriptshift"), tex.sub1);
-            return Math.max(this.baseCharZero(bbox.d * this.baseScale + tex.sub_drop * sbox.rscale), subscriptshift, sbox.h * sbox.rscale - 4 / 5 * tex.x_height);
+            var tex2 = this.font.params;
+            var subscriptshift = this.length2em(this.node.attributes.get("subscriptshift"), tex2.sub1);
+            return Math.max(this.baseCharZero(bbox.d * this.baseScale + tex2.sub_drop * sbox.rscale), subscriptshift, sbox.h * sbox.rscale - 4 / 5 * tex2.x_height);
           };
           class_1.prototype.getU = function() {
             var bbox = this.baseCore.getOuterBBox();
             var sbox = this.scriptChild.getOuterBBox();
-            var tex = this.font.params;
+            var tex2 = this.font.params;
             var attr = this.node.attributes.getList("displaystyle", "superscriptshift");
             var prime = this.node.getProperty("texprimestyle");
-            var p = prime ? tex.sup3 : attr.displaystyle ? tex.sup1 : tex.sup2;
+            var p = prime ? tex2.sup3 : attr.displaystyle ? tex2.sup1 : tex2.sup2;
             var superscriptshift = this.length2em(attr.superscriptshift, p);
-            return Math.max(this.baseCharZero(bbox.h * this.baseScale - tex.sup_drop * sbox.rscale), superscriptshift, sbox.d * sbox.rscale + 1 / 4 * tex.x_height);
+            return Math.max(this.baseCharZero(bbox.h * this.baseScale - tex2.sup_drop * sbox.rscale), superscriptshift, sbox.d * sbox.rscale + 1 / 4 * tex2.x_height);
           };
           class_1.prototype.hasMovableLimits = function() {
             var display = this.node.attributes.get("displaystyle");
@@ -23643,22 +23643,22 @@
           };
           class_1.prototype.getOverKU = function(basebox, overbox) {
             var accent = this.node.attributes.get("accent");
-            var tex = this.font.params;
+            var tex2 = this.font.params;
             var d = overbox.d * overbox.rscale;
-            var t = tex.rule_thickness * tex.separation_factor;
+            var t = tex2.rule_thickness * tex2.separation_factor;
             var delta = this.baseHasAccentOver ? t : 0;
-            var T = this.isLineAbove ? 3 * tex.rule_thickness : t;
-            var k = (accent ? T : Math.max(tex.big_op_spacing1, tex.big_op_spacing3 - Math.max(0, d))) - delta;
+            var T = this.isLineAbove ? 3 * tex2.rule_thickness : t;
+            var k = (accent ? T : Math.max(tex2.big_op_spacing1, tex2.big_op_spacing3 - Math.max(0, d))) - delta;
             return [k, basebox.h * basebox.rscale + k + d];
           };
           class_1.prototype.getUnderKV = function(basebox, underbox) {
             var accent = this.node.attributes.get("accentunder");
-            var tex = this.font.params;
+            var tex2 = this.font.params;
             var h = underbox.h * underbox.rscale;
-            var t = tex.rule_thickness * tex.separation_factor;
+            var t = tex2.rule_thickness * tex2.separation_factor;
             var delta = this.baseHasAccentUnder ? t : 0;
-            var T = this.isLineBelow ? 3 * tex.rule_thickness : t;
-            var k = (accent ? T : Math.max(tex.big_op_spacing2, tex.big_op_spacing4 - h)) - delta;
+            var T = this.isLineBelow ? 3 * tex2.rule_thickness : t;
+            var k = (accent ? T : Math.max(tex2.big_op_spacing2, tex2.big_op_spacing4 - h)) - delta;
             return [k, -(basebox.d * basebox.rscale + k + h)];
           };
           class_1.prototype.getDeltaW = function(boxes, delta) {
@@ -23984,15 +23984,15 @@
             var basebox = this.baseCore.getOuterBBox();
             if (this.UVQ)
               return this.UVQ;
-            var tex = this.font.params;
-            var t = 3 * tex.rule_thickness;
-            var subscriptshift = this.length2em(this.node.attributes.get("subscriptshift"), tex.sub2);
-            var drop = this.baseCharZero(basebox.d * this.baseScale + tex.sub_drop * subbox.rscale);
+            var tex2 = this.font.params;
+            var t = 3 * tex2.rule_thickness;
+            var subscriptshift = this.length2em(this.node.attributes.get("subscriptshift"), tex2.sub2);
+            var drop = this.baseCharZero(basebox.d * this.baseScale + tex2.sub_drop * subbox.rscale);
             var _a2 = __read([this.getU(), Math.max(drop, subscriptshift)], 2), u = _a2[0], v = _a2[1];
             var q = u - supbox.d * supbox.rscale - (subbox.h * subbox.rscale - v);
             if (q < t) {
               v += t - q;
-              var p = 4 / 5 * tex.x_height - (u - supbox.d * supbox.rscale);
+              var p = 4 / 5 * tex2.x_height - (u - supbox.d * supbox.rscale);
               if (p > 0) {
                 u += p;
                 v -= p;
@@ -24736,10 +24736,10 @@
           }
         };
         SVGmmultiscripts2.prototype.addScripts = function(x, u, v, i, n, align) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var alignX = AlignX(align);
-          var supRow = adaptor.append(this.element, this.svg("g"));
-          var subRow = adaptor.append(this.element, this.svg("g"));
+          var supRow = adaptor2.append(this.element, this.svg("g"));
+          var subRow = adaptor2.append(this.element, this.svg("g"));
           this.place(x, u, supRow);
           this.place(x, v, subRow);
           var m = i + 2 * n;
@@ -25652,12 +25652,12 @@
           this.isTop ? this.topTable(svg, labels, side) : this.subTable(svg, labels, side, dx);
         };
         SVGmtable2.prototype.spaceLabels = function() {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var h = this.getBBox().h;
           var L = this.getTableData().L;
           var space = this.getRowHalfSpacing();
           var y = h - this.fLine;
-          var current = adaptor.firstChild(this.labels);
+          var current = adaptor2.firstChild(this.labels);
           for (var i = 0; i < this.numRows; i++) {
             var row = this.childNodes[i];
             if (row.node.isKind("mlabeledtr")) {
@@ -25665,14 +25665,14 @@
               y -= space[i] + row.H;
               row.placeCell(cell, { x: 0, y, w: L, lSpace: 0, rSpace: 0, lLine: 0, rLine: 0 });
               y -= row.D + space[i + 1] + this.rLines[i];
-              current = adaptor.next(current);
+              current = adaptor2.next(current);
             } else {
               y -= space[i] + row.H + row.D + space[i + 1] + this.rLines[i];
             }
           }
         };
         SVGmtable2.prototype.topTable = function(svg, labels, side) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var _a = this.getBBox(), h = _a.h, d = _a.d, w = _a.w, L = _a.L, R = _a.R;
           var W = L + (this.pWidth || w) + R;
           var LW = this.getTableData().L;
@@ -25686,25 +25686,25 @@
             preserveAspectRatio: align === "left" ? "xMinYMid" : align === "right" ? "xMaxYMid" : "xMidYMid",
             viewBox: [this.fixed(-dx), this.fixed(-h), 1, this.fixed(h + d)].join(" ")
           }, [
-            this.svg("g", { transform: matrix }, adaptor.childNodes(svg))
+            this.svg("g", { transform: matrix }, adaptor2.childNodes(svg))
           ]);
           labels = this.svg("svg", {
             "data-labels": true,
             preserveAspectRatio: side === "left" ? "xMinYMid" : "xMaxYMid",
             viewBox: [side === "left" ? 0 : this.fixed(LW), this.fixed(-h), 1, this.fixed(h + d)].join(" ")
           }, [labels]);
-          adaptor.append(svg, this.svg("g", { transform }, [table, labels]));
+          adaptor2.append(svg, this.svg("g", { transform }, [table, labels]));
           this.place(-L, 0, svg);
         };
         SVGmtable2.prototype.subTable = function(svg, labels, side, dx) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var _a = this.getBBox(), w = _a.w, L = _a.L, R = _a.R;
           var W = L + (this.pWidth || w) + R;
           var labelW = this.getTableData().L;
           var align = this.getAlignShift()[0];
           var CW = Math.max(W, this.container.getWrapWidth(this.containerI));
           this.place(side === "left" ? (align === "left" ? 0 : align === "right" ? W - CW + dx : (W - CW) / 2 + dx) - L : (align === "left" ? CW : align === "right" ? W + dx : (CW + W) / 2 + dx) - L - labelW, 0, labels);
-          adaptor.append(svg, labels);
+          adaptor2.append(svg, labels);
         };
         SVGmtable2.kind = mtable_js_2.MmlMtable.prototype.kind;
         SVGmtable2.styles = {
@@ -26026,15 +26026,15 @@
         };
         SVGmtr2.prototype.placeColor = function() {
           var scale = 1 / this.getBBox().rscale;
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var child = this.firstChild();
-          if (child && adaptor.kind(child) === "rect" && adaptor.getAttribute(child, "data-bgcolor")) {
+          if (child && adaptor2.kind(child) === "rect" && adaptor2.getAttribute(child, "data-bgcolor")) {
             var _a = __read([this.tLine / 2 * scale, this.bLine / 2 * scale], 2), TL = _a[0], BL = _a[1];
             var _b = __read([this.tSpace * scale, this.bSpace * scale], 2), TS = _b[0], BS = _b[1];
             var _c = __read([this.H * scale, this.D * scale], 2), H = _c[0], D = _c[1];
-            adaptor.setAttribute(child, "y", this.fixed(-(D + BS + BL)));
-            adaptor.setAttribute(child, "width", this.fixed(this.parent.getWidth() * scale));
-            adaptor.setAttribute(child, "height", this.fixed(TL + TS + H + D + BS + BL));
+            adaptor2.setAttribute(child, "y", this.fixed(-(D + BS + BL)));
+            adaptor2.setAttribute(child, "width", this.fixed(this.parent.getWidth() * scale));
+            adaptor2.setAttribute(child, "height", this.fixed(TL + TS + H + D + BS + BL));
           }
         };
         SVGmtr2.kind = mtr_js_3.MmlMtr.prototype.kind;
@@ -26162,13 +26162,13 @@
           return [alignX, alignY];
         };
         SVGmtd2.prototype.placeColor = function(x, y, W, H) {
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           var child = this.firstChild();
-          if (child && adaptor.kind(child) === "rect" && adaptor.getAttribute(child, "data-bgcolor")) {
-            adaptor.setAttribute(child, "x", this.fixed(x));
-            adaptor.setAttribute(child, "y", this.fixed(y));
-            adaptor.setAttribute(child, "width", this.fixed(W));
-            adaptor.setAttribute(child, "height", this.fixed(H));
+          if (child && adaptor2.kind(child) === "rect" && adaptor2.getAttribute(child, "data-bgcolor")) {
+            adaptor2.setAttribute(child, "x", this.fixed(x));
+            adaptor2.setAttribute(child, "y", this.fixed(y));
+            adaptor2.setAttribute(child, "width", this.fixed(W));
+            adaptor2.setAttribute(child, "height", this.fixed(H));
           }
         };
         SVGmtd2.kind = mtd_js_2.MmlMtd.prototype.kind;
@@ -34132,9 +34132,9 @@
       var lengths_js_1 = require_lengths();
       exports2.SVGNS = "http://www.w3.org/2000/svg";
       exports2.XLINKNS = "http://www.w3.org/1999/xlink";
-      var SVG = (function(_super) {
-        __extends(SVG2, _super);
-        function SVG2(options) {
+      var SVG2 = (function(_super) {
+        __extends(SVG3, _super);
+        function SVG3(options) {
           if (options === void 0) {
             options = null;
           }
@@ -34146,51 +34146,51 @@
           _this.fontCache = new FontCache_js_1.FontCache(_this);
           return _this;
         }
-        SVG2.prototype.initialize = function() {
+        SVG3.prototype.initialize = function() {
           if (this.options.fontCache === "global") {
             this.fontCache.clearCache();
           }
         };
-        SVG2.prototype.clearFontCache = function() {
+        SVG3.prototype.clearFontCache = function() {
           this.fontCache.clearCache();
         };
-        SVG2.prototype.reset = function() {
+        SVG3.prototype.reset = function() {
           this.clearFontCache();
         };
-        SVG2.prototype.setScale = function(node) {
+        SVG3.prototype.setScale = function(node) {
           if (this.options.scale !== 1) {
             this.adaptor.setStyle(node, "fontSize", (0, lengths_js_1.percent)(this.options.scale));
           }
         };
-        SVG2.prototype.escaped = function(math, html) {
+        SVG3.prototype.escaped = function(math, html) {
           this.setDocument(html);
           return this.html("span", {}, [this.text(math.math)]);
         };
-        SVG2.prototype.styleSheet = function(html) {
+        SVG3.prototype.styleSheet = function(html) {
           if (this.svgStyles) {
             return this.svgStyles;
           }
           var sheet = this.svgStyles = _super.prototype.styleSheet.call(this, html);
-          this.adaptor.setAttribute(sheet, "id", SVG2.STYLESHEETID);
+          this.adaptor.setAttribute(sheet, "id", SVG3.STYLESHEETID);
           return sheet;
         };
-        SVG2.prototype.pageElements = function(html) {
+        SVG3.prototype.pageElements = function(html) {
           if (this.options.fontCache === "global" && !this.findCache(html)) {
-            return this.svg("svg", { id: SVG2.FONTCACHEID, style: { display: "none" } }, [this.fontCache.getCache()]);
+            return this.svg("svg", { id: SVG3.FONTCACHEID, style: { display: "none" } }, [this.fontCache.getCache()]);
           }
           return null;
         };
-        SVG2.prototype.findCache = function(html) {
-          var adaptor = this.adaptor;
-          var svgs = adaptor.tags(adaptor.body(html.document), "svg");
+        SVG3.prototype.findCache = function(html) {
+          var adaptor2 = this.adaptor;
+          var svgs = adaptor2.tags(adaptor2.body(html.document), "svg");
           for (var i = svgs.length - 1; i >= 0; i--) {
-            if (this.adaptor.getAttribute(svgs[i], "id") === SVG2.FONTCACHEID) {
+            if (this.adaptor.getAttribute(svgs[i], "id") === SVG3.FONTCACHEID) {
               return true;
             }
           }
           return false;
         };
-        SVG2.prototype.processMath = function(math, parent) {
+        SVG3.prototype.processMath = function(math, parent) {
           var container = this.container;
           this.container = parent;
           var wrapper = this.factory.wrap(math);
@@ -34198,7 +34198,7 @@
           this.typesetSVG(wrapper, svg, g);
           this.container = container;
         };
-        SVG2.prototype.createRoot = function(wrapper) {
+        SVG3.prototype.createRoot = function(wrapper) {
           var _a = wrapper.getOuterBBox(), w = _a.w, h = _a.h, d = _a.d, pwidth = _a.pwidth;
           var px = wrapper.metrics.em / 1e3;
           var W = Math.max(w, px);
@@ -34209,8 +34209,8 @@
             "stroke-width": 0,
             transform: "scale(1,-1)"
           });
-          var adaptor = this.adaptor;
-          var svg = adaptor.append(this.container, this.svg("svg", {
+          var adaptor2 = this.adaptor;
+          var svg = adaptor2.append(this.container, this.svg("svg", {
             xmlns: exports2.SVGNS,
             width: this.ex(W),
             height: this.ex(H),
@@ -34220,42 +34220,42 @@
             viewBox: [0, this.fixed(-h * 1e3, 1), this.fixed(W * 1e3, 1), this.fixed(H * 1e3, 1)].join(" ")
           }, [g]));
           if (W === 1e-3) {
-            adaptor.setAttribute(svg, "preserveAspectRatio", "xMidYMid slice");
+            adaptor2.setAttribute(svg, "preserveAspectRatio", "xMidYMid slice");
             if (w < 0) {
-              adaptor.setStyle(this.container, "margin-right", this.ex(w));
+              adaptor2.setStyle(this.container, "margin-right", this.ex(w));
             }
           }
           if (pwidth) {
-            adaptor.setStyle(svg, "min-width", this.ex(W));
-            adaptor.setAttribute(svg, "width", pwidth);
-            adaptor.removeAttribute(svg, "viewBox");
+            adaptor2.setStyle(svg, "min-width", this.ex(W));
+            adaptor2.setAttribute(svg, "width", pwidth);
+            adaptor2.removeAttribute(svg, "viewBox");
             var scale = this.fixed(wrapper.metrics.ex / (this.font.params.x_height * 1e3), 6);
-            adaptor.setAttribute(g, "transform", "scale(".concat(scale, ",-").concat(scale, ") translate(0, ").concat(this.fixed(-h * 1e3, 1), ")"));
+            adaptor2.setAttribute(g, "transform", "scale(".concat(scale, ",-").concat(scale, ") translate(0, ").concat(this.fixed(-h * 1e3, 1), ")"));
           }
           if (this.options.fontCache !== "none") {
-            adaptor.setAttribute(svg, "xmlns:xlink", exports2.XLINKNS);
+            adaptor2.setAttribute(svg, "xmlns:xlink", exports2.XLINKNS);
           }
           return [svg, g];
         };
-        SVG2.prototype.typesetSVG = function(wrapper, svg, g) {
-          var adaptor = this.adaptor;
+        SVG3.prototype.typesetSVG = function(wrapper, svg, g) {
+          var adaptor2 = this.adaptor;
           this.minwidth = this.shift = 0;
           if (this.options.fontCache === "local") {
             this.fontCache.clearCache();
             this.fontCache.useLocalID(this.options.localID);
-            adaptor.insert(this.fontCache.getCache(), g);
+            adaptor2.insert(this.fontCache.getCache(), g);
           }
           wrapper.toSVG(g);
           this.fontCache.clearLocalID();
           if (this.minwidth) {
-            adaptor.setStyle(svg, "minWidth", this.ex(this.minwidth));
-            adaptor.setStyle(this.container, "minWidth", this.ex(this.minwidth));
+            adaptor2.setStyle(svg, "minWidth", this.ex(this.minwidth));
+            adaptor2.setStyle(this.container, "minWidth", this.ex(this.minwidth));
           } else if (this.shift) {
-            var align = adaptor.getAttribute(this.container, "justify") || "center";
+            var align = adaptor2.getAttribute(this.container, "justify") || "center";
             this.setIndent(svg, align, this.shift);
           }
         };
-        SVG2.prototype.setIndent = function(svg, align, shift) {
+        SVG3.prototype.setIndent = function(svg, align, shift) {
           if (align === "center" || align === "left") {
             this.adaptor.setStyle(svg, "margin-left", this.ex(shift));
           }
@@ -34263,11 +34263,11 @@
             this.adaptor.setStyle(svg, "margin-right", this.ex(-shift));
           }
         };
-        SVG2.prototype.ex = function(m) {
+        SVG3.prototype.ex = function(m) {
           m /= this.font.params.x_height;
           return Math.abs(m) < 1e-3 ? "0" : m.toFixed(3).replace(/\.?0+$/, "") + "ex";
         };
-        SVG2.prototype.svg = function(kind, properties, children) {
+        SVG3.prototype.svg = function(kind, properties, children) {
           if (properties === void 0) {
             properties = {};
           }
@@ -34276,7 +34276,7 @@
           }
           return this.html(kind, properties, children, exports2.SVGNS);
         };
-        SVG2.prototype.unknownText = function(text, variant) {
+        SVG3.prototype.unknownText = function(text, variant) {
           var metrics = this.math.metrics;
           var scale = this.font.params.x_height / metrics.ex * metrics.em * 1e3;
           var svg = this.svg("text", {
@@ -34284,26 +34284,26 @@
             transform: "scale(1,-1)",
             "font-size": this.fixed(scale, 1) + "px"
           }, [this.text(text)]);
-          var adaptor = this.adaptor;
+          var adaptor2 = this.adaptor;
           if (variant !== "-explicitFont") {
             var c = (0, string_js_1.unicodeChars)(text);
             if (c.length !== 1 || c[0] < 119808 || c[0] > 120831) {
               var _a = __read(this.font.getCssFont(variant), 3), family = _a[0], italic = _a[1], bold = _a[2];
-              adaptor.setAttribute(svg, "font-family", family);
+              adaptor2.setAttribute(svg, "font-family", family);
               if (italic) {
-                adaptor.setAttribute(svg, "font-style", "italic");
+                adaptor2.setAttribute(svg, "font-style", "italic");
               }
               if (bold) {
-                adaptor.setAttribute(svg, "font-weight", "bold");
+                adaptor2.setAttribute(svg, "font-weight", "bold");
               }
             }
           }
           return svg;
         };
-        SVG2.prototype.measureTextNode = function(text) {
-          var adaptor = this.adaptor;
-          text = adaptor.clone(text);
-          adaptor.removeAttribute(text, "transform");
+        SVG3.prototype.measureTextNode = function(text) {
+          var adaptor2 = this.adaptor;
+          text = adaptor2.clone(text);
+          adaptor2.removeAttribute(text, "transform");
           var ex = this.fixed(this.font.params.x_height * 1e3, 1);
           var svg = this.svg("svg", {
             position: "absolute",
@@ -34312,14 +34312,14 @@
             height: "1ex",
             viewBox: [0, 0, ex, ex].join(" ")
           }, [text]);
-          adaptor.append(adaptor.body(adaptor.document), svg);
-          var w = adaptor.nodeSize(text, 1e3, true)[0];
-          adaptor.remove(svg);
+          adaptor2.append(adaptor2.body(adaptor2.document), svg);
+          var w = adaptor2.nodeSize(text, 1e3, true)[0];
+          adaptor2.remove(svg);
           return { w, h: 0.75, d: 0.2 };
         };
-        SVG2.NAME = "SVG";
-        SVG2.OPTIONS = __assign(__assign({}, OutputJax_js_1.CommonOutputJax.OPTIONS), { internalSpeechTitles: true, titleID: 0, fontCache: "local", localID: null });
-        SVG2.commonStyles = {
+        SVG3.NAME = "SVG";
+        SVG3.OPTIONS = __assign(__assign({}, OutputJax_js_1.CommonOutputJax.OPTIONS), { internalSpeechTitles: true, titleID: 0, fontCache: "local", localID: null });
+        SVG3.commonStyles = {
           'mjx-container[jax="SVG"]': {
             direction: "ltr"
           },
@@ -34333,11 +34333,11 @@
             stroke: "blue"
           }
         };
-        SVG2.FONTCACHEID = "MJX-SVG-global-cache";
-        SVG2.STYLESHEETID = "MJX-SVG-styles";
-        return SVG2;
+        SVG3.FONTCACHEID = "MJX-SVG-global-cache";
+        SVG3.STYLESHEETID = "MJX-SVG-styles";
+        return SVG3;
       })(OutputJax_js_1.CommonOutputJax);
-      exports2.SVG = SVG;
+      exports2.SVG = SVG2;
     }
   });
 
@@ -35976,11 +35976,11 @@
       exports2.clearDocument = exports2.saveDocument = exports2.makeBsprAttributes = exports2.removeProperty = exports2.getProperty = exports2.setProperty = exports2.balanceRules = void 0;
       var NodeUtil_js_1 = __importDefault(require_NodeUtil());
       var ParseUtil_js_1 = __importDefault(require_ParseUtil());
-      var doc = null;
+      var doc2 = null;
       var item = null;
       var getBBox = function(node) {
         item.root = node;
-        var width = doc.outputJax.getBBox(item, doc).w;
+        var width = doc2.outputJax.getBBox(item, doc2).w;
         return width;
       };
       var getRule = function(node) {
@@ -36254,14 +36254,14 @@
       };
       exports2.makeBsprAttributes = makeBsprAttributes;
       var saveDocument = function(arg) {
-        doc = arg.document;
-        if (!("getBBox" in doc.outputJax)) {
+        doc2 = arg.document;
+        if (!("getBBox" in doc2.outputJax)) {
           throw Error("The bussproofs extension requires an output jax with a getBBox() method");
         }
       };
       exports2.saveDocument = saveDocument;
       var clearDocument = function(_arg) {
-        doc = null;
+        doc2 = null;
       };
       exports2.clearDocument = clearDocument;
     }
@@ -36865,10 +36865,10 @@
           }
           return m;
         },
-        cellBlock: function(tex, table, parser, env) {
+        cellBlock: function(tex2, table, parser, env) {
           var e_2, _a;
           var mpadded = parser.create("node", "mpadded", [], { height: 0, depth: 0, voffset: "-1height" });
-          var result = new TexParser_js_1.default(tex, parser.stack.env, parser.configuration);
+          var result = new TexParser_js_1.default(tex2, parser.stack.env, parser.configuration);
           var mml = result.mml();
           if (env && result.configuration.tags.label) {
             result.configuration.tags.currentTag.env = env;
@@ -36899,9 +36899,9 @@
           table.attributes.set("align", "baseline 1");
           return original.factory.create("mphantom", {}, [parser.create("node", "mpadded", [table], { width: 0 })]);
         },
-        rowspanCell: function(mtd, tex, table, parser, env) {
+        rowspanCell: function(mtd, tex2, table, parser, env) {
           mtd.appendChild(parser.create("node", "mpadded", [
-            this.cellBlock(tex, ParseUtil_js_1.default.copyNode(table, parser), parser, env),
+            this.cellBlock(tex2, ParseUtil_js_1.default.copyNode(table, parser), parser, env),
             this.topRowTable(table, parser)
           ], { height: 0, depth: 0, voffset: "height" }));
         },
@@ -37101,10 +37101,10 @@
             return BaseMethods_js_1.default.Entry(parser, name);
           }
           parser.Push(parser.itemFactory.create("cell").setProperties({ isEntry: true, name }));
-          var tex = parser.string;
-          var braces = 0, i = parser.i, m = tex.length;
+          var tex2 = parser.string;
+          var braces = 0, i = parser.i, m = tex2.length;
           while (i < m) {
-            var c = tex.charAt(i);
+            var c = tex2.charAt(i);
             if (c === "{") {
               braces++;
               i++;
@@ -37118,7 +37118,7 @@
             } else if (c === "&" && braces === 0) {
               throw new TexError_js_1.default("ExtraCasesAlignTab", "Extra alignment tab in text for numcase environment");
             } else if (c === "\\" && braces === 0) {
-              var cs = (tex.slice(i + 1).match(/^[a-z]+|./i) || [])[0];
+              var cs = (tex2.slice(i + 1).match(/^[a-z]+|./i) || [])[0];
               if (cs === "\\" || cs === "cr" || cs === "end" || cs === "label") {
                 break;
               } else {
@@ -37128,7 +37128,7 @@
               i++;
             }
           }
-          var text = tex.substr(parser.i, i - parser.i).replace(/^\s*/, "");
+          var text = tex2.substr(parser.i, i - parser.i).replace(/^\s*/, "");
           parser.PushAll(ParseUtil_js_1.default.internalMath(parser, text, 0));
           parser.i = i;
         }
@@ -38950,8 +38950,8 @@
           var left = parser.GetUpTo(name, "&");
           var right = parser.GetUpTo(name, "&");
           parser.GetUpTo(name, "\\endAboxed");
-          var tex = ParseUtil_js_1.default.substituteArgs(parser, [left, right], "\\rlap{\\boxed{#1{}#2}}\\kern.267em\\phantom{#1}&\\phantom{{}#2}\\kern.267em");
-          parser.string = tex + rest;
+          var tex2 = ParseUtil_js_1.default.substituteArgs(parser, [left, right], "\\rlap{\\boxed{#1{}#2}}\\kern.267em\\phantom{#1}&\\phantom{{}#2}\\kern.267em");
+          parser.string = tex2 + rest;
           parser.i = 0;
         },
         ArrowBetweenLines: function(parser, name) {
@@ -38965,8 +38965,8 @@
             top.EndEntry();
             top.EndEntry();
           }
-          var tex = star ? "\\quad" + symbol : symbol + "\\quad";
-          var mml = new TexParser_js_1.default(tex, parser.stack.env, parser.configuration).mml();
+          var tex2 = star ? "\\quad" + symbol : symbol + "\\quad";
+          var mml = new TexParser_js_1.default(tex2, parser.stack.env, parser.configuration).mml();
           parser.Push(mml);
           top.EndEntry();
           top.EndRow();
@@ -39080,13 +39080,13 @@
           }
           parser.Push(mml);
         },
-        Relation: function(parser, _name, tex, unicode) {
+        Relation: function(parser, _name, tex2, unicode) {
           var options = parser.options.mathtools;
           if (options["use-unicode"] && unicode) {
             parser.Push(parser.create("token", "mo", { texClass: MmlNode_js_1.TEXCLASS.REL }, unicode));
           } else {
-            tex = "\\mathrel{" + tex.replace(/:/g, "\\MTThinColon").replace(/-/g, "\\mathrel{-}") + "}";
-            parser.string = ParseUtil_js_1.default.addArgs(parser, tex, parser.string.substr(parser.i));
+            tex2 = "\\mathrel{" + tex2.replace(/:/g, "\\MTThinColon").replace(/-/g, "\\mathrel{-}") + "}";
+            parser.string = ParseUtil_js_1.default.addArgs(parser, tex2, parser.string.substr(parser.i));
             parser.i = 0;
           }
         },
@@ -41595,13 +41595,13 @@
       MhchemMethods.xArrow = AmsMethods_js_1.AmsMethods.xArrow;
       MhchemMethods.Machine = function(parser, name, machine) {
         var arg = parser.GetArgument(name);
-        var tex;
+        var tex2;
         try {
-          tex = mhchemParser_js_1.mhchemParser.toTex(arg, machine);
+          tex2 = mhchemParser_js_1.mhchemParser.toTex(arg, machine);
         } catch (err) {
           throw new TexError_js_1.default(err[0], err[1]);
         }
-        parser.string = tex + parser.string.substr(parser.i);
+        parser.string = tex2 + parser.string.substr(parser.i);
         parser.i = 0;
       };
       new SymbolMap_js_1.CommandMap("mhchem", {
@@ -43831,62 +43831,27 @@
   });
 
   // src/mathjax-jsc.js
-  var require_mathjax_jsc = __commonJS({
-    "src/mathjax-jsc.js"() {
-      var import_liteAdaptor = __toESM(require_liteAdaptor());
-      var import_html = __toESM(require_html());
-      var import_tex = __toESM(require_tex());
-      var import_svg = __toESM(require_svg());
-      var import_mathjax = __toESM(require_mathjax());
-      var import_AllPackages = __toESM(require_AllPackages());
-      var adaptor = (0, import_liteAdaptor.liteAdaptor)();
-      (0, import_html.RegisterHTMLHandler)(adaptor);
-      var tex = new import_tex.TeX({ packages: import_AllPackages.AllPackages });
-      var svgOutput = new import_svg.SVG({ fontCache: "local" });
-      var doc = import_mathjax.mathjax.document("", { InputJax: tex, OutputJax: svgOutput });
-      function extractViewBox(markup) {
-        const m = markup.match(/viewBox\s*=\s*["']([^"']+)["']/i);
-        return m ? m[1] : null;
-      }
-      function sanitize(markup) {
-        return markup.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/\son[a-zA-Z]+\s*=\s*"[^"]*"/g, "").replace(/\son[a-zA-Z]+\s*=\s*'[^']*'/g, "").replace(/\son[a-zA-Z]+\s*=\s*[^>\s]+/g, "").replace(/javascript:/gi, "");
-      }
-      function renderJSON(latex, options) {
-        const opts = options || {};
-        const em = typeof opts.fontSize === "number" && opts.fontSize > 0 ? opts.fontSize : 16;
-        const ex = em / 2;
-        const containerWidth = 1200;
-        const display = opts.standalone === true;
-        try {
-          const node = doc.convert(latex, {
-            display,
-            em,
-            ex,
-            containerWidth
-          });
-          const markup = sanitize(adaptor.outerHTML(node));
-          const viewBox = extractViewBox(markup);
-          return JSON.stringify({
-            markup,
-            viewBox,
-            ok: true,
-            error: null
-          });
-        } catch (err) {
-          const fallbackText = display ? "$$" + latex + "$$" : "$" + latex + "$";
-          return JSON.stringify({
-            markup: "",
-            viewBox: null,
-            ok: false,
-            error: String(err && err.message ? err.message : err),
-            fallbackText
-          });
-        }
-      }
-      globalThis.MathRendererMathJax = { renderJSON };
+  var import_liteAdaptor = __toESM(require_liteAdaptor(), 1);
+  var import_html = __toESM(require_html(), 1);
+  var import_tex = __toESM(require_tex(), 1);
+  var import_svg = __toESM(require_svg(), 1);
+  var import_mathjax = __toESM(require_mathjax(), 1);
+  var import_AllPackages = __toESM(require_AllPackages(), 1);
+  var adaptor = (0, import_liteAdaptor.liteAdaptor)();
+  (0, import_html.RegisterHTMLHandler)(adaptor);
+  var tex = new import_tex.TeX({ packages: import_AllPackages.AllPackages });
+  var svgOutput = new import_svg.SVG({ fontCache: "local" });
+  var doc = import_mathjax.mathjax.document("", { InputJax: tex, OutputJax: svgOutput });
+  globalThis.MathJax = {
+    startup: {
+      adaptor,
+      document: doc
+    },
+    tex2svg(latex, options) {
+      const node = doc.convert(latex, options || {});
+      return adaptor.outerHTML(node);
     }
-  });
-  require_mathjax_jsc();
+  };
 })();
 /*! Bundled license information:
 

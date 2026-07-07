@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 /**
- * Bundles src/mathjax-jsc.js into a single IIFE that can be evaluated inside
- * JavaScriptCore (no require, no Node built-ins).
+ * Build script for JSC/Android assets.
  *
- * Output: swift/Sources/MathRenderer/Resources/MathJax/mathjax-renderer.js
- *         android/mathrenderer/src/main/assets/MathJax/mathjax-renderer.js
+ * 1. esbuild bundles src/mathjax-jsc.js → mathjax-renderer.js
+ *    (pure MathJax engine IIFE; exposes globalThis.MathJax)
+ * 2. src/mathjax-bridge.js is copied as-is to both output dirs
+ *    (no bundling needed — it has no imports)
+ *
+ * Output dirs:
+ *   swift/Sources/MathRenderer/Resources/MathJax/
+ *   android/mathrenderer/src/main/assets/MathJax/
  */
 
 import { build } from 'esbuild';
@@ -20,6 +25,8 @@ const androidOut = join(root, 'android', 'mathrenderer', 'src', 'main', 'assets'
 
 mkdirSync(swiftOut, { recursive: true });
 mkdirSync(androidOut, { recursive: true });
+
+// ── 1. Bundle the MathJax engine ─────────────────────────────────────────────
 
 await build({
   entryPoints: [join(root, 'src', 'mathjax-jsc.js')],
@@ -37,12 +44,16 @@ await build({
   },
 });
 
-// Mirror the bundle into the Android assets folder
 copyFileSync(
   join(swiftOut, 'mathjax-renderer.js'),
   join(androidOut, 'mathjax-renderer.js')
 );
 
-console.log('✅  mathjax-renderer.js written to:');
+// ── 2. Copy the bridge (no bundling — zero imports) ───────────────────────────
+
+copyFileSync(join(root, 'src', 'mathjax-bridge.js'), join(swiftOut, 'mathjax-bridge.js'));
+copyFileSync(join(root, 'src', 'mathjax-bridge.js'), join(androidOut, 'mathjax-bridge.js'));
+
+console.log('✅  mathjax-renderer.js + mathjax-bridge.js written to:');
 console.log('   ', swiftOut);
 console.log('   ', androidOut);

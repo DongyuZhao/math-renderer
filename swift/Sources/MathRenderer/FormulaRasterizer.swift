@@ -181,7 +181,7 @@
         private func cacheKey(for svg: MathJaxSVG, color: CGColor, scale: CGFloat, fontSize: CGFloat) -> NSString {
             let colorParts = (color.components ?? []).map { String(format: "%.8g", Double($0)) }.joined(separator: ",")
             return [
-                "m:\(svg.markup.hashValue)",
+                "m:\(svg.markup)",
                 "fb:\(svg.fallbackText ?? "nil")",
                 "sc:\(String(format: "%.4g", scale))",
                 "fs:\(String(format: "%.4g", fontSize))",

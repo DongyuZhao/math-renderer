@@ -142,10 +142,11 @@ class MathJaxBridge(private val context: Context) {
     private fun loadScript(): String? {
         if (cachedScript != null) return cachedScript
         return try {
-            context.assets.open("MathJax/mathjax-renderer.js")
-                .bufferedReader()
-                .use { it.readText() }
-                .also { cachedScript = it }
+            val renderer = context.assets.open("MathJax/mathjax-renderer.js")
+                .bufferedReader().use { it.readText() }
+            val bridge = context.assets.open("MathJax/mathjax-bridge.js")
+                .bufferedReader().use { it.readText() }
+            (renderer + "\n" + bridge).also { cachedScript = it }
         } catch (_: IOException) { null }
     }
 

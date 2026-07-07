@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "description": "MathJax-driven LaTeX formula renderer for JavaScriptCore, Swift, and Android",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
   "files": [
     "index.js",
     "src/",
     "scripts/",
     "swift/Sources/MathRenderer/Resources/MathJax/mathjax-renderer.js",
+    "swift/Sources/MathRenderer/Resources/MathJax/mathjax-bridge.js",
     "README.md"
   ],
   "scripts": {
