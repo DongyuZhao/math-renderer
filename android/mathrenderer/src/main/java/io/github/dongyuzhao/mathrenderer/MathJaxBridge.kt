@@ -53,6 +53,19 @@ class MathJaxBridge(private val context: Context) {
             instance ?: synchronized(this) {
                 instance ?: MathJaxBridge(context.applicationContext).also { instance = it }
             }
+
+        /** Parses a "minX minY width height" viewBox string. Internal for testing. */
+        internal fun parseViewBox(raw: String?): MathJaxViewBox? {
+            if (raw.isNullOrBlank()) return null
+            val parts = raw.trim().split(Regex("[\\s,]+")).mapNotNull { it.toDoubleOrNull() }
+            return if (parts.size == 4) MathJaxViewBox(parts[0], parts[1], parts[2], parts[3]) else null
+        }
+
+        /** Extracts a viewBox from an SVG markup string. Internal for testing. */
+        internal fun extractViewBox(markup: String): MathJaxViewBox? {
+            val m = Regex("""viewBox\s*=\s*["']([^"']+)["']""", RegexOption.IGNORE_CASE).find(markup)
+            return parseViewBox(m?.groupValues?.getOrNull(1))
+        }
     }
 
     private var sandboxFuture: ListenableFuture<JavaScriptSandbox>? = null
@@ -153,16 +166,9 @@ class MathJaxBridge(private val context: Context) {
         return MathJaxSVG(markup = markup, viewBox = viewBox, fallbackText = fallback)
     }
 
-    private fun parseViewBox(raw: String?): MathJaxViewBox? {
-        if (raw.isNullOrBlank()) return null
-        val parts = raw.trim().split(Regex("[\\s,]+")).mapNotNull { it.toDoubleOrNull() }
-        return if (parts.size == 4) MathJaxViewBox(parts[0], parts[1], parts[2], parts[3]) else null
-    }
+    private fun parseViewBox(raw: String?): MathJaxViewBox? = Companion.parseViewBox(raw)
 
-    private fun extractViewBox(markup: String): MathJaxViewBox? {
-        val m = Regex("""viewBox\s*=\s*["']([^"']+)["']""", RegexOption.IGNORE_CASE).find(markup)
-        return parseViewBox(m?.groupValues?.getOrNull(1))
-    }
+    private fun extractViewBox(markup: String): MathJaxViewBox? = Companion.extractViewBox(markup)
 
     private fun String.sanitized(): String = this
         .replace(Regex("<script[\\s\\S]*?</script>", RegexOption.IGNORE_CASE), "")
