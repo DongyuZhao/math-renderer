@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "math-renderer-android"
 include(":mathrenderer")
+include(":sampleapp")
