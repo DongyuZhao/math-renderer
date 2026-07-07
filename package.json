@@ -1,0 +1,40 @@
+{
+  "name": "@dongyuzhao/math-renderer",
+  "version": "0.1.0",
+  "description": "MathJax-driven LaTeX formula renderer for JavaScriptCore, Swift, and Android",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "src/",
+    "scripts/",
+    "swift/Sources/MathRenderer/Resources/MathJax/mathjax-renderer.js",
+    "swift/Sources/MathRenderer/Resources/MathJax/mathjax-bridge.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node test/node-api.js"
+  },
+  "keywords": [
+    "latex",
+    "mathjax",
+    "renderer",
+    "math",
+    "formula",
+    "svg",
+    "jsc",
+    "javascriptcore"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mathjax-full": "^3.2.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}

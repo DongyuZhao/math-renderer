@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathRenderer Sample</string>
+    <string name="hint_latex">LaTeX formula</string>
+    <string name="default_formula">x^2 + y^2 = r^2</string>
+    <string name="action_render">Render</string>
+    <string name="cd_formula_image">Rendered formula</string>
+    <string name="status_rendering">Rendering…</string>
+    <string name="status_success">Rendered successfully</string>
+    <string name="status_error">Rendering failed — check your LaTeX input</string>
+</resources>
