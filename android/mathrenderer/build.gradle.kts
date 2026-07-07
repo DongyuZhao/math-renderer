@@ -42,6 +42,14 @@ android {
     }
 }
 
+dependencies {
+    // JavaScriptEngine: out-of-process V8 sandbox (requires Android 13 / API 33 at runtime;
+    // the library handles lower API levels by returning an error).
+    implementation("androidx.javascriptengine:javascriptengine:1.0.0-beta01")
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.2.0")
+    implementation("com.google.guava:guava:33.2.1-android")
+}
+
 publishing {
     publications {
         register<MavenPublication>("release") {

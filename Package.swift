@@ -3,6 +3,13 @@ import PackageDescription
 
 let package = Package(
     name: "MathRenderer",
+    platforms: [
+        .iOS(.v15),
+        .macOS(.v12),
+        .tvOS(.v15),
+        .watchOS(.v8),
+        .visionOS(.v1),
+    ],
     products: [
         .library(
             name: "MathRenderer",
@@ -12,7 +19,10 @@ let package = Package(
     targets: [
         .target(
             name: "MathRenderer",
-            path: "swift/Sources/MathRenderer"
+            path: "swift/Sources/MathRenderer",
+            resources: [
+                .process("Resources"),
+            ]
         )
     ]
 )

@@ -12,7 +12,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "node --input-type=module scripts/build.js",
+    "build": "node scripts/build.mjs",
     "test": "node test/node-api.js"
   },
   "keywords": [
@@ -27,12 +27,6 @@
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "mathjax-full": "^3.2.2"
-  },
-  "devDependencies": {
-    "esbuild": "^0.25.6"
-  },
   "dependencies": {
     "mathjax-full": "^3.2.1"
   },
