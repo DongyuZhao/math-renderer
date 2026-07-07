@@ -14,7 +14,11 @@ let package = Package(
         .library(
             name: "MathRenderer",
             targets: ["MathRenderer"]
-        )
+        ),
+        .executable(
+            name: "MathRendererSample",
+            targets: ["MathRendererSample"]
+        ),
     ],
     targets: [
         .target(
@@ -23,6 +27,16 @@ let package = Package(
             resources: [
                 .process("Resources"),
             ]
-        )
+        ),
+        .executableTarget(
+            name: "MathRendererSample",
+            dependencies: ["MathRenderer"],
+            path: "swift/SampleApp"
+        ),
+        .testTarget(
+            name: "MathRendererTests",
+            dependencies: ["MathRenderer"],
+            path: "swift/Tests/MathRendererTests"
+        ),
     ]
 )
