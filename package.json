@@ -1,0 +1,21 @@
+{
+  "name": "@dongyuzhao/math-renderer",
+  "version": "0.1.0",
+  "description": "Cross-platform MathJax-compliant LaTeX formula renderer",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"No JavaScript tests configured\""
+  },
+  "keywords": [
+    "latex",
+    "mathjax",
+    "renderer",
+    "math"
+  ],
+  "author": "",
+  "license": "MIT"
+}
