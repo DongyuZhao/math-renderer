@@ -1,0 +1,60 @@
+id	category	level	displayMode	fontSize	scale	tex
+arith-addition	elementary	primary	inline	16	1	12 + 7 = 19
+arith-multiplication	elementary	primary	inline	16	1	8 \times 7 = 56
+arith-division	elementary	primary	inline	16	1	56 \div 8 = 7
+fraction-add	elementary	primary	inline	16	1	\frac{3}{4} + \frac{1}{6} = \frac{11}{12}
+mixed-number	elementary	primary	inline	16	1	2\frac{1}{2} = \frac{5}{2}
+fraction-compare	elementary	primary	inline	16	1	\frac{2}{3} > \frac{1}{2}
+percentage	elementary	middle	inline	16	1	25\% = \frac{1}{4}
+ratio	elementary	middle	inline	16	1	a : b = 3 : 4
+power-of-two	elementary	middle	inline	16	1	2^{10} = 1024
+sqrt-basic	elementary	middle	inline	16	1	\sqrt{144} = 12
+pythagorean	elementary	middle	inline	16	1	a^2 + b^2 = c^2
+linear-equation	elementary	middle	inline	16	1	y = kx + b
+circle-area	elementary	middle	inline	16	1	A = \pi r^2
+absolute-value	elementary	middle	block	18	1	|x| = \begin{cases} x, & x \ge 0 \\ -x, & x < 0 \end{cases}
+quadratic-formula	elementary	high	block	18	1	x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+binomial-theorem	elementary	high	block	18	1	(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k
+logarithm-product	elementary	high	inline	16	1	\log_b(xy) = \log_b x + \log_b y
+geometric-series	elementary	high	block	18	1	\sum_{n=0}^{\infty} a r^n = \frac{a}{1-r}
+trig-pythagorean	elementary	high	inline	16	1	\sin^2\theta + \cos^2\theta = 1
+law-of-cosines	elementary	high	inline	16	1	c^2 = a^2 + b^2 - 2ab\cos C
+complex-number	elementary	high	inline	16	1	z = a + bi
+arithmetic-sequence	elementary	high	inline	16	1	a_n = a_1 + (n-1)d
+permutation	elementary	high	inline	16	1	P(n,k) = \frac{n!}{(n-k)!}
+combination	elementary	high	inline	16	1	\binom{n}{k} = \frac{n!}{k!(n-k)!}
+limit-sin	calculus	university	block	20	1	\lim_{x \to 0} \frac{\sin x}{x} = 1
+derivative-definition	calculus	university	block	20	1	f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+gaussian-integral	calculus	university	block	20	1	\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+basel-sum	calculus	university	block	20	1	\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
+taylor-exp	calculus	university	block	20	1	e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}
+euler-identity	calculus	university	inline	18	1	e^{i\pi} + 1 = 0
+fundamental-theorem	calculus	university	block	20	1	\int_a^b f'(x)\,dx = f(b) - f(a)
+partial-derivative	calculus	university	inline	18	1	\frac{\partial f}{\partial x}
+gradient	calculus	university	block	20	1	\nabla f = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, \frac{\partial f}{\partial z} \right)
+matrix-determinant	calculus	university	block	20	1	\det\begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc
+matrix-2x2	calculus	university	block	20	1	\begin{bmatrix} a & b \\ c & d \end{bmatrix}
+system-aligned	calculus	university	block	20	1	\begin{aligned} a &= b + c \\ d &= e + f \end{aligned}
+eigenvalue	calculus	university	inline	18	1	A\mathbf{v} = \lambda \mathbf{v}
+fourier-transform	calculus	university	block	20	1	\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\, e^{-2\pi i x \xi}\,dx
+root-scaled	calculus	university	inline	16	1.5	\sqrt{x + 1}
+newton-second-law	physics	high	inline	18	1	\vec{F} = m\vec{a}
+mass-energy	physics	high	inline	18	1	E = mc^2
+kinetic-energy	physics	high	inline	18	1	E_k = \frac{1}{2}mv^2
+gravitation	physics	high	inline	18	1	F = G\frac{m_1 m_2}{r^2}
+ohms-law	physics	middle	inline	16	1	V = IR
+wave-speed	physics	high	inline	16	1	v = f\lambda
+kinematics	physics	high	block	18	1	x = x_0 + v_0 t + \frac{1}{2} a t^2
+schrodinger	physics	university	block	20	1	i\hbar\frac{\partial}{\partial t}\Psi = \hat{H}\Psi
+maxwell-faraday	physics	university	block	20	1	\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}
+ideal-gas	physics	high	inline	16	1	PV = nRT
+coulomb-law	physics	high	inline	18	1	F = k\frac{q_1 q_2}{r^2}
+planck-energy	physics	university	inline	16	1	E = h\nu
+nernst-equation	physics	university	block	18	1	E = E^\circ - \frac{RT}{nF}\ln Q
+chem-water-synthesis	chemistry	middle	block	18	1	\ce{2H2 + O2 -> 2H2O}
+chem-carbonic-acid	chemistry	high	block	18	1	\ce{CO2 + H2O <=> H2CO3}
+chem-methane-combustion	chemistry	high	block	18	1	\ce{CH4 + 2O2 -> CO2 + 2H2O}
+chem-sulfate-ion	chemistry	high	inline	18	1	\ce{SO4^2-}
+chem-ammonia-synthesis	chemistry	high	block	18	1	\ce{N2 + 3H2 <=> 2NH3}
+chem-ph-definition	chemistry	high	inline	18	1	\mathrm{pH} = -\log_{10}[\ce{H+}]
+chem-precipitation	chemistry	high	block	18	1	\ce{AgNO3 + NaCl -> AgCl v + NaNO3}

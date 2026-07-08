@@ -1,0 +1,11 @@
+{
+    "name": "@math-renderer/mathjax-core",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "files": [
+        "src",
+        "generated",
+        "LICENSE-MathJax.txt"
+    ]
+}

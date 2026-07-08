@@ -1,0 +1,8 @@
+# Vitest run artifacts (NOT the committed baselines under test/__screenshots__)
+/test-results/
+/coverage/
+/.vitest/
+/.vitest-attachments/
+# Browser-mode failure screenshots land next to baselines; keep only the
+# platform baselines (e.g. pixel-<id>-chromium-darwin.png).
+test/__screenshots__/**/*-[0-9].png

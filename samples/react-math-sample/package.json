@@ -1,0 +1,26 @@
+{
+    "name": "react-math-sample",
+    "version": "0.1.0",
+    "description": "Sample app for react-math",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "predev": "npm --prefix ../../packages/react-math run build",
+        "dev": "vite",
+        "prebuild": "npm --prefix ../../packages/react-math run build",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-math": "file:../../packages/react-math"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.3.1",
+        "typescript": "^5.5.4",
+        "vite": "^6.4.3"
+    }
+}

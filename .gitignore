@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+node_modules/
+dist/
+.build/
+.swiftpm/
+.worktrees/
+.gradle/
+build/
+local.properties
+captures/
+*.hprof
+*.xcuserstate

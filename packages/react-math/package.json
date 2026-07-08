@@ -1,0 +1,40 @@
+{
+    "name": "react-math",
+    "version": "0.1.0",
+    "description": "React MathJax SVG renderer package",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "test": "vitest run --project unit",
+        "test:watch": "vitest --project unit",
+        "test:pixel": "vitest run --project browser",
+        "test:pixel:update": "vitest run --project browser --update"
+    },
+    "peerDependencies": {
+        "react": ">=18.0.0"
+    },
+    "dependencies": {
+        "mathjax-full": "3.2.2"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.7",
+        "@vitejs/plugin-react": "^6.0.3",
+        "@vitest/browser": "^4.1.10",
+        "@vitest/browser-playwright": "^4.1.10",
+        "jsdom": "^29.1.1",
+        "playwright": "^1.61.1",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "typescript": "^5.5.4",
+        "vitest": "^4.1.10",
+        "vitest-browser-react": "^2.2.0"
+    }
+}

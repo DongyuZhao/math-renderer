@@ -1,0 +1,41 @@
+{
+    "private": true,
+    "scripts": {
+        "build:mathjax-core-runtime": "node scripts/build-mathjax-core-runtime.mjs",
+        "check:mathjax-core-runtime": "node scripts/build-mathjax-core-runtime.mjs --check",
+        "build:latex-to-svg": "node scripts/build-latex-to-svg.mjs",
+        "check:latex-to-svg": "node scripts/build-latex-to-svg.mjs --check",
+        "sync:mathjax": "node scripts/sync-mathjax-assets.mjs",
+        "gen:compose-goldens": "node scripts/gen-compose-goldens.mjs",
+        "format": "npm run format:prettier && npm run format:swift && npm run format:kotlin",
+        "format:check": "npm run format:prettier:check && npm run format:swift:check && npm run format:kotlin:check",
+        "format:prettier": "prettier --write .",
+        "format:prettier:check": "prettier --check .",
+        "format:swift": "swift format --recursive --configuration .swift-format --in-place packages/swift-math/Package.swift packages/swift-math/Sources packages/swift-math/Tests samples/swift-math-sample/Sources",
+        "format:swift:check": "swift format lint --recursive --configuration .swift-format packages/swift-math/Package.swift packages/swift-math/Sources packages/swift-math/Tests samples/swift-math-sample/Sources",
+        "format:kotlin": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew ktlintFormat",
+        "format:kotlin:check": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew ktlintCheck",
+        "test:scaffold": "node --test test/*.test.mjs",
+        "test:shared": "node --test packages/mathjax-core/test/*.test.mjs",
+        "test:shared:update": "UPDATE_MATH_SNAPSHOTS=1 node --test packages/mathjax-core/test/*.test.mjs",
+        "test:react": "npm --prefix packages/react-math test",
+        "test:swift": "swift test --package-path packages/swift-math",
+        "test:android": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew :packages:compose-math:testDebugUnitTest",
+        "test": "npm run test:scaffold && npm run test:shared && npm run test:react",
+        "test:all": "npm test && npm run test:swift && npm run test:android",
+        "sample:react:dev": "npm --prefix samples/react-math-sample run dev",
+        "sample:react:build": "npm --prefix samples/react-math-sample run build",
+        "sample:swift:generate": "xcodegen generate --spec samples/swift-math-sample/project.yml --project samples/swift-math-sample",
+        "sample:swift:build": "xcodebuild -project samples/swift-math-sample/SwiftMathSample.xcodeproj -scheme SwiftMathSample-iOS -destination 'generic/platform=iOS Simulator' build",
+        "sample:android:build": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew :samples:compose-math-sample:assembleDebug",
+        "snapshot:react:visual": "npm --prefix packages/react-math run test:pixel",
+        "snapshot:react:visual:record": "npm --prefix packages/react-math run test:pixel:update",
+        "snapshot:swift:visual": "swift test --package-path packages/swift-math --filter MathVisualSnapshotTests",
+        "snapshot:swift:visual:record": "UPDATE_MATH_SNAPSHOTS=1 swift test --package-path packages/swift-math --filter MathVisualSnapshotTests",
+        "snapshot:android:visual": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew :packages:compose-math:verifyRoborazziDebug",
+        "snapshot:android:visual:record": "JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ANDROID_HOME=\"$HOME/Library/Android/sdk\" ./gradlew :packages:compose-math:recordRoborazziDebug"
+    },
+    "devDependencies": {
+        "prettier": "^3.9.4"
+    }
+}

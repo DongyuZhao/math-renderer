@@ -1,0 +1,6 @@
+invocation=MathRenderLatexToSvg.renderJSON("x^2 + y^2 = z^2",{"standalone":false,"fontSize":16.0,"scale":1.0})
+ok=true
+viewBox=MathJaxViewBox(minX=0.0, minY=-442.0, width=1861.0, height=622.0)
+fallbackText=null
+error=null
+markupSha256=c8f784e8c03e549eefdbb3833e1922edad40598c427d2ec362dd0ab4925e5f5a

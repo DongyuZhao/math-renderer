@@ -1,0 +1,35 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+# Kotlin: ktlint reads these keys from .editorconfig.
+[*.{kt,kts}]
+ktlint_code_style = intellij_idea
+ktlint_function_naming_ignore_when_annotated_with = Composable
+indent_size = 4
+tab_width = 4
+max_line_length = 120
+
+[*.{js,mjs,cjs,jsx,ts,tsx}]
+indent_size = 4
+tab_width = 4
+
+[*.swift]
+indent_size = 4
+tab_width = 4
+max_line_length = 100
+
+# Keep generated/vendored assets and Markdown untouched by whitespace trimming.
+[*.md]
+trim_trailing_whitespace = false
+
+[*.svg]
+insert_final_newline = false
+trim_trailing_whitespace = false
